@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b3d2a">
+<title>KrushiMithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--g1:#0b3d2a;--g2:#14804a;--g3:#52c57a;--lime:#b7e36a;--gold:#f6b93b;--bg:#f2f7ee;--ink:#17301f;--mut:#5f7566;--line:#e1ebdc;--card:#fff;--red:#d9534f}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Poppins','Noto Sans Kannada','Noto Sans Devanagari','Noto Sans Telugu','Noto Sans Tamil',system-ui,sans-serif;background:radial-gradient(circle at 20% 10%,#2c9a5f 0,#0b3d2a 62%) fixed;min-height:100vh;display:flex;justify-content:center;color:var(--ink);font-size:14px}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+#phone{width:100%;max-width:440px;height:100vh;height:100dvh;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 70px rgba(0,0,0,.45)}
+@media(min-width:600px){body{align-items:center;padding:18px}#phone{height:880px;max-height:94vh;border-radius:38px;border:6px solid #08281b}}
+#view{position:absolute;inset:0 0 72px 0;overflow-y:auto;scroll-behavior:smooth}
+#view.nonav{bottom:0}
+#nav{position:absolute;left:0;right:0;bottom:0;height:72px;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -6px 24px rgba(11,61,42,.12);display:flex;justify-content:space-around;align-items:center;z-index:5}
+#nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;border-radius:14px;color:var(--mut);transition:.2s}
+#nav button span{font-size:20px}
+#nav button small{font-size:10.5px;font-weight:500}
+#nav button.on{color:var(--g2);background:#e6f5ea;font-weight:700}
+/* splash */
+#splash{position:absolute;inset:0;z-index:30;background:linear-gradient(160deg,#0b3d2a 0,#14804a 55%,#7bcf6f 120%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .6s,visibility .6s;overflow:hidden}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.sun{position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(246,185,59,.55),transparent 65%);animation:pulse 4s infinite}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.7}}
+.field{position:absolute;bottom:0;left:0;right:0;height:34%;background:repeating-linear-gradient(100deg,rgba(0,0,0,.12) 0 14px,transparent 14px 34px);clip-path:polygon(0 30%,100% 0,100% 100%,0 100%)}
+.sprout{width:150px;height:150px;position:relative;z-index:2}
+.stem{stroke-dasharray:60;stroke-dashoffset:60;animation:draw 1.1s .3s forwards}
+.leaf{transform-origin:60px 62px;transform:scale(0);animation:pop .7s forwards}
+.l1{animation-delay:1.1s}.l2{animation-delay:1.45s;transform-origin:60px 52px}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes pop{70%{transform:scale(1.12)}to{transform:scale(1)}}
+.sp-title{font-size:34px;font-weight:800;letter-spacing:.5px;margin-top:10px;z-index:2}
+.sp-title span{display:inline-block;opacity:0;transform:translateY(14px);animation:rise .5s forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.sp-tag{margin-top:6px;opacity:0;animation:rise .6s 1.9s forwards;z-index:2;font-weight:500;color:#d8f3a0}
+.sp-bar{margin-top:30px;width:150px;height:5px;border-radius:5px;background:rgba(255,255,255,.2);overflow:hidden;z-index:2}
+.sp-bar i{display:block;height:100%;width:0;background:var(--lime);animation:load 3s .1s forwards}
+@keyframes load{to{width:100%}}
+/* login */
+.login{min-height:100%;background:linear-gradient(180deg,#0b3d2a,#14804a 70%)}
+.lg-top{padding:36px 24px 70px;color:#fff;text-align:center;position:relative}
+.logo-sm{width:76px;height:76px;margin:0 auto 10px;border-radius:24px;background:rgba(255,255,255,.14);display:grid;place-items:center;border:1px solid rgba(255,255,255,.3)}
+.lg-top h1{font-size:26px;font-weight:800}.lg-top p{color:#d8f3a0;font-size:13px}
+.lgsel{position:absolute;top:14px;right:14px}
+.lg-card{background:var(--bg);border-radius:30px 30px 0 0;padding:28px 22px;margin-top:-34px;min-height:430px;position:relative}
+.lg-card h2{font-size:20px;margin-bottom:4px}.lg-card p.s{color:var(--mut);margin-bottom:20px}
+.phone-in{display:flex;align-items:center;background:#fff;border:2px solid var(--line);border-radius:16px;overflow:hidden;transition:.2s}
+.phone-in:focus-within{border-color:var(--g3)}
+.phone-in b{padding:0 12px;border-right:1px solid var(--line);color:var(--g2)}
+.phone-in input{flex:1;border:0;outline:0;padding:15px 12px;font-size:17px;letter-spacing:1px;background:transparent;min-width:0}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:16px;font-weight:700;background:linear-gradient(135deg,var(--g2),#0e6a3b);color:#fff;box-shadow:0 8px 20px rgba(20,128,74,.35);margin-top:16px;transition:.15s}
+.btn:active{transform:scale(.98)}
+.btn.alt{background:#fff;color:var(--g2);box-shadow:none;border:2px solid var(--g2)}
+.btn.gold{background:linear-gradient(135deg,#f6b93b,#e69a0c);box-shadow:0 8px 20px rgba(230,154,12,.35)}
+.btn.sm{width:auto;padding:10px 16px;margin:0;font-size:13px;border-radius:12px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.otps{display:flex;gap:12px;justify-content:center;margin:10px 0 6px}
+.otps input{width:58px;height:62px;text-align:center;font-size:26px;font-weight:700;border:2px solid var(--line);border-radius:16px;outline:0;background:#fff}
+.otps input:focus{border-color:var(--g3)}
+.hint{text-align:center;color:var(--mut);font-size:12px;margin-top:6px}
+.lang{background:rgba(255,255,255,.95);border:0;border-radius:12px;padding:7px 8px;font-weight:600;color:var(--g1);outline:0}
+/* generic */
+.wrap{padding:16px}
+.bar{display:flex;align-items:center;gap:10px;padding:16px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-radius:0 0 26px 26px}
+.bar h2{font-size:18px;flex:1}.bar .bk{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-size:18px}
+.card{background:var(--card);border-radius:20px;padding:16px;box-shadow:0 6px 20px rgba(23,48,31,.07);margin-bottom:14px}
+.card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mut{color:var(--mut)}.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+.chip{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border-radius:999px;background:#e6f5ea;color:var(--g2);font-weight:600;font-size:12px}
+.chip.gold{background:#fff3d6;color:#a86b00}
+.list{list-style:none}.list li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);line-height:1.45}.list li:last-child{border:0}
+.list li::before{content:attr(data-i);flex:none}
+.note{background:#fff8e1;border:1px solid #ffe29a;color:#7a5600;border-radius:14px;padding:11px 13px;font-size:12.5px;margin-bottom:14px;line-height:1.5}
+.warn{background:#fdecea;border-color:#f5c2be;color:#8a1f17}
+.link{color:var(--g2);font-weight:700;text-decoration:underline}
+.ring{--p:70;width:64px;height:64px;flex:none;border-radius:50%;background:conic-gradient(var(--g2) calc(var(--p)*1%),#dfe9dc 0);display:grid;place-items:center;position:relative}
+.ring::before{content:'';position:absolute;inset:7px;background:#fff;border-radius:50%}.ring b{position:relative;font-size:14px}
+.ring.big{width:84px;height:84px}.ring.big b{font-size:19px}
+.fi{width:100%;padding:13px 14px;border-radius:14px;border:2px solid var(--line);background:#fff;outline:0;margin:6px 0 14px}
+.fi:focus{border-color:var(--g3)}
+label.l{font-weight:600;font-size:13px}
+/* permissions */
+.perm{padding:34px 20px;min-height:100%;background:linear-gradient(180deg,#e9f6e8,var(--bg))}
+.perm h2{font-size:24px}.perm p.s{color:var(--mut);margin:4px 0 22px}
+.pc{display:flex;align-items:center;gap:14px;background:#fff;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 6px 18px rgba(23,48,31,.07)}
+.pc .e{width:52px;height:52px;border-radius:16px;background:#e6f5ea;display:grid;place-items:center;font-size:26px}
+.pc small{color:var(--mut)}.pc .ok{color:var(--g2);font-weight:700}
+/* home */
+.hero{background:linear-gradient(150deg,var(--g1),var(--g2));padding:22px 18px 46px;border-radius:0 0 34px 34px;color:#fff;position:relative}
+.hero .top{display:flex;justify-content:space-between;align-items:center}.hero small{color:#c9efb0}.hero h2{font-size:20px}
+.search{position:absolute;left:18px;right:18px;bottom:-26px;background:#fff;border-radius:18px;display:flex;align-items:center;padding:5px 6px 5px 16px;box-shadow:0 12px 28px rgba(11,61,42,.25);gap:4px}
+.search input{flex:1;border:0;outline:0;padding:11px 0;background:transparent;min-width:0}
+.search button{width:42px;height:42px;border-radius:14px;background:#e6f5ea;color:var(--g2);display:grid;place-items:center}
+.search button.mic{background:var(--g2);color:#fff}
+body.listening .mic{animation:ring 1s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(20,128,74,.6)}100%{box-shadow:0 0 0 16px rgba(20,128,74,0)}}
+.wx{margin-top:42px;border-radius:24px;padding:18px;color:#fff;background:linear-gradient(145deg,#2f80ed,#56ccf2);box-shadow:0 10px 26px rgba(47,128,237,.3);position:relative;overflow:hidden}
+.wx.night{background:linear-gradient(145deg,#1d3557,#457b9d)}
+.wx .big{font-size:48px;font-weight:700;line-height:1}.wx .ic{font-size:56px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.2))}
+.wx .st{display:flex;gap:8px;margin-top:14px}.wx .st div{flex:1;background:rgba(255,255,255,.18);border-radius:14px;padding:8px;text-align:center;font-size:12px}
+.wx .st b{display:block;font-size:14px}
+.days{display:flex;gap:8px;margin-top:12px;overflow-x:auto}.days div{flex:1;min-width:58px;text-align:center;font-size:11px;background:rgba(255,255,255,.14);border-radius:12px;padding:7px 4px}
+.skel{height:170px;border-radius:24px;margin-top:42px;background:linear-gradient(90deg,#e1ebdc,#f1f6ee,#e1ebdc);background-size:200% 100%;animation:sk 1.3s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.tile{background:#fff;border-radius:20px;padding:16px;text-align:left;box-shadow:0 6px 18px rgba(23,48,31,.07);transition:.2s;position:relative;overflow:hidden}
+.tile:active{transform:scale(.97)}
+.tile .e{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-size:24px;margin-bottom:10px}
+.tile b{font-size:13.5px}
+/* steps */
+.steps{display:flex;gap:6px;padding:16px 16px 0}
+.steps div{flex:1;text-align:center;font-size:11px;color:var(--mut);font-weight:600}
+.steps i{display:block;height:6px;border-radius:6px;background:#d9e6d4;margin-bottom:6px}
+.steps div.on{color:var(--g2)}.steps div.on i{background:var(--g2)}
+.photo{height:230px;border-radius:22px;background:#e6efe1 center/cover;border:2px dashed #b9d1b1;display:grid;place-items:center;color:var(--mut);overflow:hidden;position:relative;text-align:center}
+.scan::after{content:'';position:absolute;left:0;right:0;height:60px;background:linear-gradient(180deg,transparent,rgba(82,197,122,.7),transparent);animation:scan 1.4s infinite alternate}
+@keyframes scan{from{top:-30px}to{top:200px}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bars .b{margin:10px 0}.bars .t{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.bars .tr{height:9px;background:#e7efe3;border-radius:9px;overflow:hidden}.bars .tr i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--g3),var(--g2))}
+/* reco */
+.top-crop{background:linear-gradient(150deg,var(--g1),var(--g2));color:#fff;border-radius:26px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.top-crop .em{font-size:60px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
+.top-crop .ring::before{background:#0f5d37}.top-crop .ring{background:conic-gradient(var(--lime) calc(var(--p)*1%),rgba(255,255,255,.2) 0)}
+.top-crop p{line-height:1.6;margin:12px 0;color:#e5f6dc}
+.mini{display:flex;gap:8px}.mini div{flex:1;background:rgba(255,255,255,.14);border-radius:14px;padding:9px;text-align:center;font-size:11.5px}.mini b{display:block;font-size:14px}
+.crow{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#fff;margin-bottom:10px;box-shadow:0 4px 14px rgba(23,48,31,.06);width:100%;text-align:left;transition:.15s}
+.crow:active{transform:scale(.98)}.crow .em{font-size:30px}
+.crow.sel{outline:3px solid var(--g3);background:#effaf0}
+.crow .tr{height:7px;border-radius:7px;background:#e7efe3;margin-top:6px;overflow:hidden}.crow .tr i{display:block;height:100%;background:linear-gradient(90deg,var(--g3),var(--g2))}
+.modal{position:absolute;inset:0;background:rgba(8,40,27,.55);z-index:40;display:flex;align-items:flex-end;opacity:0;visibility:hidden;transition:.25s}
+.modal.open{opacity:1;visibility:visible}
+.sheet{background:var(--bg);width:100%;max-height:88%;overflow-y:auto;border-radius:28px 28px 0 0;padding:20px;transform:translateY(40px);transition:.3s}
+.modal.open .sheet{transform:none}
+.sheet.cam{padding:0;height:100%;max-height:100%;border-radius:0;background:#000;position:relative}
+.sheet video{width:100%;height:100%;object-fit:cover}
+.camctl{position:absolute;bottom:34px;left:0;right:0;display:flex;justify-content:space-around;align-items:center}
+.camctl .rb{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-size:20px}
+.shutter{width:76px;height:76px;border-radius:50%;background:#fff;border:6px solid rgba(255,255,255,.5);box-shadow:0 0 0 4px rgba(0,0,0,.3)}
+/* plan */
+.tl{display:flex;justify-content:space-between;position:relative;margin:10px 0 4px}
+.tl::before{content:'';position:absolute;left:8%;right:8%;top:18px;height:4px;background:#dfe9dc;border-radius:4px}
+.tl div{text-align:center;position:relative;flex:1;font-size:11px}
+.tl i{display:grid;place-items:center;margin:0 auto 6px;width:38px;height:38px;border-radius:50%;background:var(--g2);color:#fff;font-style:normal;box-shadow:0 0 0 5px #e6f5ea}
+.tl b{display:block;font-size:11.5px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.trio div{background:#fff;border-radius:18px;padding:12px 8px;text-align:center;box-shadow:0 4px 14px rgba(23,48,31,.06)}
+.trio small{color:var(--mut);display:block;font-size:11px}.trio b{font-size:15px}
+.trio .pf b{color:var(--g2)}
+svg text{font-family:inherit}
+/* chat */
+.chat{display:flex;flex-direction:column;min-height:100%}
+.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.bub{max-width:84%;padding:11px 14px;border-radius:18px;line-height:1.5;white-space:pre-line;animation:rise .3s both}
+.bub.bot{background:#fff;border-bottom-left-radius:5px;box-shadow:0 4px 12px rgba(23,48,31,.07)}
+.bub.me{background:linear-gradient(135deg,var(--g2),#0e6a3b);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.bub .act{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.sug{display:flex;gap:8px;overflow-x:auto;padding:0 14px 8px}.sug button{white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:500}
+.chatbar{position:sticky;bottom:0;background:var(--bg);padding:8px 14px 12px;display:flex;gap:8px;align-items:center}
+.chatbar input{flex:1;border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px 14px;outline:0;min-width:0}
+.chatbar button{width:46px;height:46px;border-radius:15px;background:var(--g2);color:#fff;display:grid;place-items:center;flex:none}
+.spk{display:inline-flex;align-items:center;gap:6px;color:var(--g2);font-weight:700;font-size:12px;margin-top:6px;background:#e6f5ea;padding:5px 10px;border-radius:10px}
+.top-crop .spk{background:rgba(255,255,255,.18);color:#fff}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 4px}.tabs button{white-space:nowrap;padding:9px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:600;font-size:12.5px}
+.tabs button.on{background:var(--g2);color:#fff;border-color:var(--g2)}
+.menu{display:flex;align-items:center;gap:14px;background:#fff;padding:15px;border-radius:18px;margin-bottom:10px;width:100%;text-align:left;box-shadow:0 4px 14px rgba(23,48,31,.06)}
+.menu .e{width:44px;height:44px;border-radius:14px;background:#e6f5ea;display:grid;place-items:center;font-size:22px}
+#toast{position:absolute;left:50%;bottom:92px;transform:translate(-50%,20px);background:#17301f;color:#fff;padding:11px 18px;border-radius:14px;opacity:0;transition:.3s;z-index:60;max-width:88%;text-align:center;pointer-events:none;font-size:13px}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.stepper{display:flex;align-items:center;gap:10px}.stepper button{width:42px;height:42px;border-radius:14px;background:#e6f5ea;font-size:22px;font-weight:700;color:var(--g2)}
+.stepper input{width:80px;text-align:center;font-size:20px;font-weight:700;border:2px solid var(--line);border-radius:14px;padding:8px;outline:0}
+.bud .r{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div id="phone">
+  <div id="view" class="nonav"></div>
+  <nav id="nav" style="display:none"></nav>
+  <div id="splash">
+    <div class="sun"></div><div class="field"></div>
+    <svg class="sprout" viewBox="0 0 120 120"><defs><linearGradient id="lgx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8f3a0"/><stop offset="1" stop-color="#3fb36b"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.25)"/><ellipse cx="60" cy="100" rx="24" ry="6" fill="rgba(0,0,0,.25)"/><path class="stem" d="M60 98 C60 80 60 66 60 52" stroke="#d8f3a0" stroke-width="5" fill="none" stroke-linecap="round"/><path class="leaf l1" d="M60 62 C40 62 28 50 26 34 C44 34 58 44 60 62Z" fill="url(#lgx)"/><path class="leaf l2" d="M60 52 C80 52 92 40 94 24 C76 24 62 34 60 52Z" fill="url(#lgx)"/></svg>
+    <div class="sp-title" id="spt"></div>
+    <div class="sp-tag" id="spg"></div>
+    <div class="sp-bar"><i></i></div>
+  </div>
+  <div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+  <div id="toast"></div>
+</div>
+
+<script>
+/* ===================== i18n ===================== */
+const LANGS={en:'English',hi:'हिन्दी',kn:'ಕನ್ನಡ',te:'తెలుగు',ta:'தமிழ்'};
+const LC={en:'en-IN',hi:'hi-IN',kn:'kn-IN',te:'te-IN',ta:'ta-IN'};
+const L={
+en:{tagline:'Your smart farming friend',lang:'Language',login_t:'Welcome, farmer!',login_s:'Log in with your mobile number',phone:'Mobile number',send_otp:'Send OTP',otp_t:'Enter the 4-digit OTP',otp_hint:'Demo OTP: 1234',verify:'Verify and login',bad_phone:'Enter a valid 10-digit number',bad_otp:'Wrong OTP',
+perm_t:'Allow permissions',perm_s:'These help KrushiMithra guide you better',loc:'Location',loc_d:'Weather and region-based advice',cam:'Camera',cam_d:'Scan soil and crops',mic:'Microphone',mic_d:'Talk to the assistant',allow:'Allow',allowed:'Allowed',cont:'Continue',perm_denied:'Permission denied. You can still continue with demo data.',
+hello:'Namaste',search_ph:'Ask or search anything…',weather:'Weather today',humidity:'Humidity',wind:'Wind',rain:'Rain',outlook:'5-day outlook',
+w_clear:'Clear',w_cloud:'Cloudy',w_rain:'Rain',w_storm:'Thunderstorm',w_fog:'Fog',warn_rain:'Heavy rain expected in the next 5 days. Tap for protection steps.',warn_heat:'Very hot days ahead. Tap for protection steps.',
+n_home:'Home',n_soil:'Soil',n_crop:'Crops',n_ask:'Ask AI',n_more:'More',
+q_soil:'Check soil',q_crop:'Best crop',q_plan:'Crop plan',q_alert:'Climate alerts',q_scheme:'Govt schemes',q_ask:'Ask assistant',
+soil_t:'Soil fertility check',st1:'Region',st2:'Previous crop',st3:'Soil photo',region:'Your region',region_d:'Detected from your location. Edit if needed.',prev_crop:'Previous crop grown',prev_fert:'Fertilizer used last time',none:'None / fallow',chem:'Chemical',organic:'Organic',both:'Both',next:'Next',back:'Back',take_photo:'Take photo',upload:'Upload',analyze:'Analyze soil',analyzing:'Analyzing soil…',soil_res:'Soil report',stype:'Soil type',fertility:'Fertility',ph:'Estimated pH',treat:'Treatment before sowing',low:'Low',medium:'Medium',high:'High',see_crop:'See crop recommendation',rescan:'Scan again',photo_note:'This is a photo-based estimate. Confirm with a Soil Health Card lab test.',
+tr_fym:'Add 4 tonnes of farmyard manure per acre and plough it in',tr_lime:'Apply about 200 kg agricultural lime per acre to correct acidity',tr_gypsum:'Apply 200 kg gypsum per acre and add organic matter for alkaline or clay soil',tr_compost:'Mix compost or vermicompost and use mulch to hold water in sandy soil',tr_green:'Grow green manure (sunnhemp or dhaincha) and plough it in before sowing',tr_ok:'Soil is in good shape. No special treatment needed, give the regular basal dose',
+reco_t:'Recommended crop',reco_txt:'{crop} is the best fit for your farm now. Temperature {temp}°C, {soil} and the {season} season match its needs. Suitability: {score}%.',listen:'Listen',other_crops:'Other crops',why_not_q:'Why not other crops?',tap_crop:'Tap a crop to know why',choose:'Choose this crop',decide_t:'Final crop decision',acres:'Farm size (acres)',confirm:'Confirm and see plan',no_soil:'Do a soil check first for better accuracy.',use_default:'Continue',ask_more:'Ask the assistant',
+profits:'Profits',faults:'Drawbacks',r_season:'it is not its sowing season now',r_temp:'the temperature of {temp}°C is outside its ideal range',r_soil:'it prefers a different kind of soil',r_rot:'it was grown last season and repeating it raises pest and disease risk',r_fine:'it is a fair option but other crops score higher',why_txt:'{crop} scores {score}% for your farm right now because {reason}.',profit_txt:'Expected profit about {net} per acre, duration {days} days.',
+plan_t:'Cultivation plan',seeds:'Seeds / planting material',fert:'Fertilizers',pest:'Pest and disease control',budget:'Budget plan',b_seed:'Seeds',b_fert:'Fertilizer',b_pest:'Pesticide',b_labour:'Labour',b_irr:'Irrigation / other',total_cost:'Total cost',exp_income:'Expected income',net_profit:'Net profit',duration:'Duration',days:'days',harvest:'Harvest around',price_pred:'Predicted price at harvest',price_note:'₹ per quintal. Indicative estimate, not a guarantee.',sow:'Sowing',grow:'Growth',flower:'Flowering',harvest_s:'Harvest',plan_txt:'Sow {crop}. Duration {days} days. Estimated cost {cost}, income {inc}, profit {net}. Harvest around {date}.',plan_note:'Cost and price figures are indicative averages. Local rates will differ.',
+alert_t:'Sudden climate change',a_rain:'Heavy rain / flood',a_heat:'Heatwave',a_drought:'Drought',a_frost:'Cold / frost',a_pest:'Pest outbreak',prevent:'Prevention (before)',protect:'Protection (during / after)',
+scheme_t:'Government schemes',dmg_t:'If your crop is damaged',dmg_txt:'If your crop is damaged, take photos of the field, inform the insurance company within 72 hours by calling 14447, and contact your nearest agriculture office.',scheme_note:'Details are indicative. Verify on the official portal or at your nearest Raitha Samparka Kendra / KVK.',
+ai_t:'KrushiMithra assistant',ai_ph:'Type or speak…',send:'Send',c_greet:'Namaste! I am KrushiMithra. Ask me about weather, soil, crops or government schemes.',c_weather:'Right now in {region}: {temp}°C, humidity {hum}%.',c_soil:'Tap the button below to start the soil check.',c_scheme:'Crop insurance, PM-KISAN and Kisan Credit Card are available. See the details below.',c_crop:'The best crop for you right now is {crop} ({score}%).',c_fb:'I can help with weather, soil, crop advice and government schemes. Type a crop name and I will tell you its profits and drawbacks.',sug1:'Best crop now?',sug2:'Why not tomato?',sug3:'Crop insurance',
+s_kharif:'Kharif',s_rabi:'Rabi',s_summer:'summer',cam_fail:'Camera not available. Use Upload instead.',no_sr:'Voice input is not supported in this browser. Try Chrome.',no_tts:'Voice output is not supported in this browser.',more_t:'More',logout:'Log out',open:'Open'},
+hi:{tagline:'आपका स्मार्ट खेती साथी',lang:'भाषा',login_t:'स्वागत है, किसान भाई!',login_s:'मोबाइल नंबर से लॉगिन करें',phone:'मोबाइल नंबर',send_otp:'OTP भेजें',otp_t:'4 अंकों का OTP डालें',otp_hint:'डेमो OTP: 1234',verify:'सत्यापित करें',bad_phone:'सही 10 अंकों का नंबर डालें',bad_otp:'गलत OTP',
+perm_t:'अनुमतियाँ दें',perm_s:'इससे कृषिमित्र बेहतर सलाह दे पाएगा',loc:'लोकेशन',loc_d:'मौसम और क्षेत्र के अनुसार सलाह',cam:'कैमरा',cam_d:'मिट्टी और फसल की फोटो',mic:'माइक्रोफोन',mic_d:'असिस्टेंट से बोलकर बात करें',allow:'अनुमति दें',allowed:'अनुमति मिली',cont:'आगे बढ़ें',
+hello:'नमस्ते',search_ph:'कुछ भी पूछें या खोजें…',weather:'आज का मौसम',humidity:'नमी',wind:'हवा',rain:'बारिश',outlook:'5 दिन का पूर्वानुमान',
+w_clear:'साफ़',w_cloud:'बादल',w_rain:'बारिश',w_storm:'तूफ़ान',w_fog:'कोहरा',
+n_home:'होम',n_soil:'मिट्टी',n_crop:'फसल',n_ask:'AI से पूछें',n_more:'और',
+q_soil:'मिट्टी जाँच',q_crop:'सर्वश्रेष्ठ फसल',q_plan:'खेती योजना',q_alert:'मौसम चेतावनी',q_scheme:'सरकारी योजनाएँ',q_ask:'असिस्टेंट',
+soil_t:'मिट्टी की उर्वरता जाँच',st1:'क्षेत्र',st2:'पिछली फसल',st3:'मिट्टी की फोटो',region:'आपका क्षेत्र',region_d:'लोकेशन से पता चला। चाहें तो बदलें।',prev_crop:'पिछली बार उगाई फसल',prev_fert:'पिछली बार उपयोग की खाद',none:'कुछ नहीं / खाली',chem:'रासायनिक',organic:'जैविक',both:'दोनों',next:'आगे',back:'पीछे',take_photo:'फोटो लें',upload:'अपलोड',analyze:'मिट्टी जाँचें',analyzing:'मिट्टी की जाँच हो रही है…',soil_res:'मिट्टी रिपोर्ट',stype:'मिट्टी का प्रकार',fertility:'उर्वरता',ph:'अनुमानित pH',treat:'बुवाई से पहले उपचार',low:'कम',medium:'मध्यम',high:'अधिक',see_crop:'फसल सुझाव देखें',rescan:'दोबारा जाँचें',photo_note:'यह फोटो आधारित अनुमान है। सटीक जाँच के लिए मृदा स्वास्थ्य कार्ड लैब टेस्ट करवाएँ।',
+tr_fym:'प्रति एकड़ 4 टन गोबर की खाद डालकर जुताई करें',tr_lime:'अम्लता सुधारने के लिए प्रति एकड़ लगभग 200 किग्रा चूना डालें',tr_gypsum:'क्षारीय या चिकनी मिट्टी के लिए प्रति एकड़ 200 किग्रा जिप्सम और जैविक खाद डालें',tr_compost:'रेतीली मिट्टी में कम्पोस्ट या वर्मीकम्पोस्ट मिलाएँ और मल्चिंग करें',tr_green:'बुवाई से पहले हरी खाद (ढैंचा या सनई) उगाकर पलट दें',tr_ok:'मिट्टी अच्छी है। विशेष उपचार की जरूरत नहीं, सामान्य बेसल खुराक दें',
+reco_t:'सुझाई गई फसल',reco_txt:'{crop} आपके खेत के लिए सबसे उपयुक्त है। तापमान {temp}°C, {soil} और {season} मौसम इसकी जरूरत से मेल खाते हैं। उपयुक्तता: {score}%।',listen:'सुनें',other_crops:'अन्य फसलें',why_not_q:'दूसरी फसल क्यों नहीं?',tap_crop:'कारण जानने के लिए फसल पर टैप करें',choose:'यह फसल चुनें',decide_t:'अंतिम फसल निर्णय',acres:'खेत का आकार (एकड़)',confirm:'पक्का करें और योजना देखें',no_soil:'बेहतर सटीकता के लिए पहले मिट्टी जाँच करें।',use_default:'आगे बढ़ें',ask_more:'असिस्टेंट से पूछें',
+profits:'फायदे',faults:'कमियाँ',r_season:'अभी इसकी बुवाई का मौसम नहीं है',r_temp:'अभी का तापमान {temp}°C इसके लिए उपयुक्त नहीं है',r_soil:'यह दूसरी तरह की मिट्टी पसंद करती है',r_rot:'पिछली बार यही फसल थी, दोबारा बोने से रोग और कीट बढ़ते हैं',r_fine:'यह ठीक विकल्प है, पर दूसरी फसलों का स्कोर ज्यादा है',why_txt:'{crop} का स्कोर अभी {score}% है क्योंकि {reason}।',profit_txt:'अनुमानित मुनाफा प्रति एकड़ लगभग {net}, अवधि {days} दिन।',
+plan_t:'खेती योजना',seeds:'बीज / पौध',fert:'खाद-उर्वरक',pest:'कीट और रोग नियंत्रण',budget:'बजट योजना',b_seed:'बीज',b_fert:'खाद',b_pest:'दवा',b_labour:'मजदूरी',b_irr:'सिंचाई / अन्य',total_cost:'कुल लागत',exp_income:'अनुमानित आय',net_profit:'शुद्ध मुनाफा',duration:'अवधि',days:'दिन',harvest:'कटाई लगभग',price_pred:'कटाई के समय भाव का अनुमान',price_note:'₹ प्रति क्विंटल। सांकेतिक अनुमान, गारंटी नहीं।',sow:'बुवाई',grow:'वृद्धि',flower:'फूल',harvest_s:'कटाई',plan_txt:'{crop} की बुवाई करें। अवधि {days} दिन। अनुमानित लागत {cost}, आय {inc}, मुनाफा {net}। कटाई {date} के आसपास।',plan_note:'लागत और भाव सांकेतिक औसत हैं। स्थानीय दर अलग हो सकती है।',
+alert_t:'अचानक मौसम बदलाव',a_rain:'भारी बारिश / बाढ़',a_heat:'लू',a_drought:'सूखा',a_frost:'पाला / ठंड',a_pest:'कीट प्रकोप',prevent:'पहले से बचाव',protect:'नुकसान से सुरक्षा',
+scheme_t:'सरकारी योजनाएँ',dmg_t:'फसल खराब हो तो क्या करें',dmg_txt:'फसल खराब होने पर खेत की फोटो लें, 72 घंटे के भीतर 14447 पर कॉल करके बीमा कंपनी को सूचना दें और नजदीकी कृषि कार्यालय से संपर्क करें।',
+ai_t:'कृषिमित्र असिस्टेंट',ai_ph:'लिखें या बोलें…',send:'भेजें',c_greet:'नमस्ते! मैं कृषिमित्र हूँ। मौसम, मिट्टी, फसल या सरकारी योजनाओं के बारे में पूछिए।',c_weather:'अभी {region} में तापमान {temp}°C और नमी {hum}% है।',c_soil:'मिट्टी जाँच शुरू करने के लिए नीचे बटन दबाएँ।',c_scheme:'फसल बीमा, पीएम-किसान और किसान क्रेडिट कार्ड उपलब्ध हैं। विवरण नीचे देखें।',c_crop:'अभी आपके लिए सबसे अच्छी फसल {crop} है ({score}%)।',c_fb:'मैं मौसम, मिट्टी, फसल सुझाव और सरकारी योजनाओं में मदद कर सकता हूँ। किसी फसल का नाम लिखें तो उसके फायदे और कमियाँ बताऊँगा।',sug1:'अभी सबसे अच्छी फसल?',sug2:'टमाटर क्यों नहीं?',sug3:'फसल बीमा',
+s_kharif:'खरीफ',s_rabi:'रबी',s_summer:'गर्मी',logout:'लॉग आउट',open:'खोलें'},
+kn:{tagline:'ನಿಮ್ಮ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸ್ನೇಹಿತ',lang:'ಭಾಷೆ',login_t:'ಸ್ವಾಗತ, ರೈತರೇ!',login_s:'ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯಿಂದ ಲಾಗಿನ್ ಆಗಿ',phone:'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ',send_otp:'OTP ಕಳುಹಿಸಿ',otp_t:'4 ಅಂಕಿಯ OTP ನಮೂದಿಸಿ',otp_hint:'ಡೆಮೊ OTP: 1234',verify:'ಪರಿಶೀಲಿಸಿ',bad_phone:'ಸರಿಯಾದ 10 ಅಂಕಿಯ ಸಂಖ್ಯೆ ನೀಡಿ',bad_otp:'ತಪ್ಪಾದ OTP',
+perm_t:'ಅನುಮತಿಗಳನ್ನು ನೀಡಿ',perm_s:'ಇದರಿಂದ ಕೃಷಿಮಿತ್ರ ಉತ್ತಮ ಸಲಹೆ ನೀಡಬಲ್ಲದು',loc:'ಸ್ಥಳ',loc_d:'ಹವಾಮಾನ ಮತ್ತು ಪ್ರದೇಶ ಆಧಾರಿತ ಸಲಹೆ',cam:'ಕ್ಯಾಮೆರಾ',cam_d:'ಮಣ್ಣು ಮತ್ತು ಬೆಳೆ ಫೋಟೋ',mic:'ಮೈಕ್ರೊಫೋನ್',mic_d:'ಸಹಾಯಕರೊಂದಿಗೆ ಮಾತನಾಡಿ',allow:'ಅನುಮತಿಸಿ',allowed:'ಅನುಮತಿ ಸಿಕ್ಕಿದೆ',cont:'ಮುಂದುವರಿಸಿ',
+hello:'ನಮಸ್ಕಾರ',search_ph:'ಏನಾದರೂ ಕೇಳಿ ಅಥವಾ ಹುಡುಕಿ…',weather:'ಇಂದಿನ ಹವಾಮಾನ',humidity:'ತೇವಾಂಶ',wind:'ಗಾಳಿ',rain:'ಮಳೆ',outlook:'5 ದಿನಗಳ ಮುನ್ಸೂಚನೆ',
+w_clear:'ಸ್ಪಷ್ಟ',w_cloud:'ಮೋಡ',w_rain:'ಮಳೆ',w_storm:'ಗುಡುಗು ಸಹಿತ ಮಳೆ',w_fog:'ಮಂಜು',
+n_home:'ಮುಖಪುಟ',n_soil:'ಮಣ್ಣು',n_crop:'ಬೆಳೆ',n_ask:'AI ಕೇಳಿ',n_more:'ಇನ್ನಷ್ಟು',
+q_soil:'ಮಣ್ಣು ಪರೀಕ್ಷೆ',q_crop:'ಉತ್ತಮ ಬೆಳೆ',q_plan:'ಬೆಳೆ ಯೋಜನೆ',q_alert:'ಹವಾಮಾನ ಎಚ್ಚರಿಕೆ',q_scheme:'ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು',q_ask:'ಸಹಾಯಕ',
+soil_t:'ಮಣ್ಣಿನ ಫಲವತ್ತತೆ ಪರೀಕ್ಷೆ',st1:'ಪ್ರದೇಶ',st2:'ಹಿಂದಿನ ಬೆಳೆ',st3:'ಮಣ್ಣಿನ ಫೋಟೋ',region:'ನಿಮ್ಮ ಪ್ರದೇಶ',region_d:'ಸ್ಥಳದಿಂದ ಪತ್ತೆಯಾಗಿದೆ. ಬೇಕಾದರೆ ಬದಲಿಸಿ.',prev_crop:'ಹಿಂದೆ ಬೆಳೆದ ಬೆಳೆ',prev_fert:'ಹಿಂದೆ ಬಳಸಿದ ಗೊಬ್ಬರ',none:'ಯಾವುದೂ ಇಲ್ಲ / ಖಾಲಿ',chem:'ರಾಸಾಯನಿಕ',organic:'ಸಾವಯವ',both:'ಎರಡೂ',next:'ಮುಂದೆ',back:'ಹಿಂದೆ',take_photo:'ಫೋಟೋ ತೆಗೆಯಿರಿ',upload:'ಅಪ್‌ಲೋಡ್',analyze:'ಮಣ್ಣು ವಿಶ್ಲೇಷಿಸಿ',analyzing:'ಮಣ್ಣನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ…',soil_res:'ಮಣ್ಣಿನ ವರದಿ',stype:'ಮಣ್ಣಿನ ವಿಧ',fertility:'ಫಲವತ್ತತೆ',ph:'ಅಂದಾಜು pH',treat:'ಬಿತ್ತನೆ ಮೊದಲು ಉಪಚಾರ',low:'ಕಡಿಮೆ',medium:'ಮಧ್ಯಮ',high:'ಹೆಚ್ಚು',see_crop:'ಬೆಳೆ ಶಿಫಾರಸು ನೋಡಿ',rescan:'ಮತ್ತೆ ಪರೀಕ್ಷಿಸಿ',photo_note:'ಇದು ಫೋಟೋ ಆಧಾರಿತ ಅಂದಾಜು. ಖಚಿತತೆಗೆ ಮಣ್ಣು ಆರೋಗ್ಯ ಕಾರ್ಡ್ ಪ್ರಯೋಗಾಲಯ ಪರೀಕ್ಷೆ ಮಾಡಿಸಿ.',
+tr_fym:'ಎಕರೆಗೆ 4 ಟನ್ ತಿಪ್ಪೆಗೊಬ್ಬರ ಹಾಕಿ ಉಳುಮೆ ಮಾಡಿ',tr_lime:'ಹುಳಿ ಕಡಿಮೆ ಮಾಡಲು ಎಕರೆಗೆ ಸುಮಾರು 200 ಕೆ.ಜಿ ಸುಣ್ಣ ಹಾಕಿ',tr_gypsum:'ಕ್ಷಾರೀಯ ಅಥವಾ ಜೇಡಿ ಮಣ್ಣಿಗೆ ಎಕರೆಗೆ 200 ಕೆ.ಜಿ ಜಿಪ್ಸಂ ಮತ್ತು ಸಾವಯವ ಗೊಬ್ಬರ ಹಾಕಿ',tr_compost:'ಮರಳು ಮಣ್ಣಿಗೆ ಕಾಂಪೋಸ್ಟ್ ಅಥವಾ ಎರೆಹುಳು ಗೊಬ್ಬರ ಬೆರೆಸಿ, ಹೊದಿಕೆ (ಮಲ್ಚಿಂಗ್) ಮಾಡಿ',tr_green:'ಬಿತ್ತನೆಗೆ ಮೊದಲು ಹಸಿರೆಲೆ ಗೊಬ್ಬರ (ಡೈಂಚಾ ಅಥವಾ ಸೆಣಬು) ಬೆಳೆದು ಮಣ್ಣಿಗೆ ಸೇರಿಸಿ',tr_ok:'ಮಣ್ಣು ಚೆನ್ನಾಗಿದೆ. ವಿಶೇಷ ಉಪಚಾರ ಬೇಕಿಲ್ಲ, ಸಾಮಾನ್ಯ ಮೂಲ ಗೊಬ್ಬರ ಕೊಡಿ',
+reco_t:'ಶಿಫಾರಸು ಮಾಡಿದ ಬೆಳೆ',reco_txt:'{crop} ನಿಮ್ಮ ಹೊಲಕ್ಕೆ ಅತ್ಯುತ್ತಮ. ತಾಪಮಾನ {temp}°C, {soil} ಮತ್ತು {season} ಹಂಗಾಮು ಇದರ ಅಗತ್ಯಕ್ಕೆ ಹೊಂದುತ್ತವೆ. ಸೂಕ್ತತೆ: {score}%.',listen:'ಕೇಳಿ',other_crops:'ಇತರ ಬೆಳೆಗಳು',why_not_q:'ಬೇರೆ ಬೆಳೆ ಏಕೆ ಬೇಡ?',tap_crop:'ಕಾರಣ ತಿಳಿಯಲು ಬೆಳೆಯನ್ನು ಒತ್ತಿ',choose:'ಈ ಬೆಳೆ ಆರಿಸಿ',decide_t:'ಅಂತಿಮ ಬೆಳೆ ನಿರ್ಧಾರ',acres:'ಜಮೀನಿನ ಗಾತ್ರ (ಎಕರೆ)',confirm:'ಖಚಿತಪಡಿಸಿ, ಯೋಜನೆ ನೋಡಿ',no_soil:'ಹೆಚ್ಚು ನಿಖರತೆಗೆ ಮೊದಲು ಮಣ್ಣು ಪರೀಕ್ಷೆ ಮಾಡಿ.',use_default:'ಮುಂದುವರಿಸಿ',ask_more:'ಸಹಾಯಕರನ್ನು ಕೇಳಿ',
+profits:'ಲಾಭಗಳು',faults:'ಕೊರತೆಗಳು',r_season:'ಈಗ ಇದರ ಬಿತ್ತನೆ ಕಾಲವಲ್ಲ',r_temp:'ಈಗಿನ ತಾಪಮಾನ {temp}°C ಇದಕ್ಕೆ ಸೂಕ್ತವಲ್ಲ',r_soil:'ಇದು ಬೇರೆ ರೀತಿಯ ಮಣ್ಣನ್ನು ಇಷ್ಟಪಡುತ್ತದೆ',r_rot:'ಹಿಂದೆ ಇದೇ ಬೆಳೆ ಇತ್ತು, ಮತ್ತೆ ಬಿತ್ತಿದರೆ ರೋಗ ಮತ್ತು ಕೀಟ ಹೆಚ್ಚುತ್ತದೆ',r_fine:'ಇದು ಸರಿಯಾದ ಆಯ್ಕೆ, ಆದರೆ ಬೇರೆ ಬೆಳೆಗಳ ಸ್ಕೋರ್ ಹೆಚ್ಚು',why_txt:'{crop} ಗೆ ಈಗ {score}% ಸ್ಕೋರ್ ಇದೆ, ಏಕೆಂದರೆ {reason}.',profit_txt:'ಎಕರೆಗೆ ಅಂದಾಜು ಲಾಭ ಸುಮಾರು {net}, ಅವಧಿ {days} ದಿನ.',
+plan_t:'ಬೆಳೆ ಯೋಜನೆ',seeds:'ಬೀಜ / ಸಸಿ',fert:'ಗೊಬ್ಬರ',pest:'ಕೀಟ ಮತ್ತು ರೋಗ ನಿಯಂತ್ರಣ',budget:'ಬಜೆಟ್ ಯೋಜನೆ',b_seed:'ಬೀಜ',b_fert:'ಗೊಬ್ಬರ',b_pest:'ಔಷಧ',b_labour:'ಕೂಲಿ',b_irr:'ನೀರಾವರಿ / ಇತರೆ',total_cost:'ಒಟ್ಟು ವೆಚ್ಚ',exp_income:'ನಿರೀಕ್ಷಿತ ಆದಾಯ',net_profit:'ನಿವ್ವಳ ಲಾಭ',duration:'ಅವಧಿ',days:'ದಿನ',harvest:'ಕಟಾವು ಸುಮಾರು',price_pred:'ಕಟಾವಿನ ಸಮಯದ ಬೆಲೆ ಅಂದಾಜು',price_note:'₹ ಕ್ವಿಂಟಾಲ್‌ಗೆ. ಸೂಚಕ ಅಂದಾಜು, ಖಾತರಿ ಅಲ್ಲ.',sow:'ಬಿತ್ತನೆ',grow:'ಬೆಳವಣಿಗೆ',flower:'ಹೂ',harvest_s:'ಕಟಾವು',plan_txt:'{crop} ಬಿತ್ತಿರಿ. ಅವಧಿ {days} ದಿನ. ಅಂದಾಜು ವೆಚ್ಚ {cost}, ಆದಾಯ {inc}, ಲಾಭ {net}. ಕಟಾವು {date} ಸುಮಾರಿಗೆ.',plan_note:'ವೆಚ್ಚ ಮತ್ತು ಬೆಲೆ ಸೂಚಕ ಸರಾಸರಿಗಳು. ಸ್ಥಳೀಯ ದರ ಬೇರೆ ಇರಬಹುದು.',
+alert_t:'ಹಠಾತ್ ಹವಾಮಾನ ಬದಲಾವಣೆ',a_rain:'ಭಾರಿ ಮಳೆ / ಪ್ರವಾಹ',a_heat:'ಬಿಸಿಗಾಳಿ',a_drought:'ಬರ',a_frost:'ಚಳಿ / ಮಂಜು',a_pest:'ಕೀಟ ಹಾವಳಿ',prevent:'ಮುಂಚಿತ ತಡೆ',protect:'ನಷ್ಟದಿಂದ ರಕ್ಷಣೆ',
+scheme_t:'ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು',dmg_t:'ಬೆಳೆ ಹಾನಿಯಾದರೆ ಏನು ಮಾಡಬೇಕು',dmg_txt:'ಬೆಳೆ ಹಾನಿಯಾದರೆ ಹೊಲದ ಫೋಟೋ ತೆಗೆದು, 72 ಗಂಟೆಯೊಳಗೆ 14447 ಗೆ ಕರೆ ಮಾಡಿ ವಿಮಾ ಕಂಪನಿಗೆ ತಿಳಿಸಿ ಮತ್ತು ಹತ್ತಿರದ ಕೃಷಿ ಕಚೇರಿ ಅಥವಾ ರೈತ ಸಂಪರ್ಕ ಕೇಂದ್ರವನ್ನು ಸಂಪರ್ಕಿಸಿ.',
+ai_t:'ಕೃಷಿಮಿತ್ರ ಸಹಾಯಕ',ai_ph:'ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ…',send:'ಕಳುಹಿಸಿ',c_greet:'ನಮಸ್ಕಾರ! ನಾನು ಕೃಷಿಮಿತ್ರ. ಹವಾಮಾನ, ಮಣ್ಣು, ಬೆಳೆ ಅಥವಾ ಸರ್ಕಾರಿ ಯೋಜನೆಗಳ ಬಗ್ಗೆ ಕೇಳಿ.',c_weather:'ಈಗ {region} ನಲ್ಲಿ ತಾಪಮಾನ {temp}°C, ತೇವಾಂಶ {hum}%.',c_soil:'ಮಣ್ಣು ಪರೀಕ್ಷೆ ಶುರು ಮಾಡಲು ಕೆಳಗಿನ ಬಟನ್ ಒತ್ತಿ.',c_scheme:'ಬೆಳೆ ವಿಮೆ, ಪಿಎಂ-ಕಿಸಾನ್, ಕಿಸಾನ್ ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಲಭ್ಯವಿವೆ. ವಿವರ ಕೆಳಗೆ ನೋಡಿ.',c_crop:'ಈಗ ನಿಮಗೆ ಉತ್ತಮ ಬೆಳೆ {crop} ({score}%).',c_fb:'ಹವಾಮಾನ, ಮಣ್ಣು, ಬೆಳೆ ಶಿಫಾರಸು ಮತ್ತು ಸರ್ಕಾರಿ ಯೋಜನೆಗಳಲ್ಲಿ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ. ಬೆಳೆಯ ಹೆಸರು ಬರೆದರೆ ಅದರ ಲಾಭ ಮತ್ತು ಕೊರತೆ ಹೇಳುತ್ತೇನೆ.',sug1:'ಈಗ ಉತ್ತಮ ಬೆಳೆ?',sug2:'ಟೊಮೇಟೊ ಏಕೆ ಬೇಡ?',sug3:'ಬೆಳೆ ವಿಮೆ',
+s_kharif:'ಮುಂಗಾರು',s_rabi:'ಹಿಂಗಾರು',s_summer:'ಬೇಸಿಗೆ',logout:'ಲಾಗ್ ಔಟ್',open:'ತೆರೆಯಿರಿ'},
+te:{tagline:'మీ స్మార్ట్ వ్యవసాయ మిత్రుడు',lang:'భాష',login_t:'స్వాగతం, రైతు సోదరా!',login_s:'మొబైల్ నంబర్‌తో లాగిన్ అవ్వండి',phone:'మొబైల్ నంబర్',send_otp:'OTP పంపండి',otp_t:'4 అంకెల OTP నమోదు చేయండి',otp_hint:'డెమో OTP: 1234',verify:'ధృవీకరించండి',bad_phone:'సరైన 10 అంకెల నంబర్ ఇవ్వండి',bad_otp:'తప్పు OTP',
+perm_t:'అనుమతులు ఇవ్వండి',perm_s:'దీనివల్ల కృషిమిత్ర మెరుగైన సలహా ఇవ్వగలదు',loc:'లొకేషన్',loc_d:'వాతావరణం, ప్రాంతం ఆధారిత సలహా',cam:'కెమెరా',cam_d:'నేల, పంట ఫోటోలు',mic:'మైక్రోఫోన్',mic_d:'అసిస్టెంట్‌తో మాట్లాడండి',allow:'అనుమతించు',allowed:'అనుమతి ఉంది',cont:'కొనసాగించండి',
+hello:'నమస్తే',search_ph:'ఏదైనా అడగండి లేదా వెతకండి…',weather:'నేటి వాతావరణం',humidity:'తేమ',wind:'గాలి',rain:'వర్షం',outlook:'5 రోజుల అంచనా',
+w_clear:'నిర్మలం',w_cloud:'మేఘావృతం',w_rain:'వర్షం',w_storm:'ఉరుములతో వర్షం',w_fog:'పొగమంచు',
+n_home:'హోమ్',n_soil:'నేల',n_crop:'పంట',n_ask:'AI అడగండి',n_more:'మరిన్ని',
+q_soil:'నేల పరీక్ష',q_crop:'ఉత్తమ పంట',q_plan:'పంట ప్రణాళిక',q_alert:'వాతావరణ హెచ్చరికలు',q_scheme:'ప్రభుత్వ పథకాలు',q_ask:'అసిస్టెంట్',
+soil_t:'నేల సారం పరీక్ష',st1:'ప్రాంతం',st2:'గత పంట',st3:'నేల ఫోటో',region:'మీ ప్రాంతం',region_d:'లొకేషన్ ద్వారా గుర్తించబడింది. కావాలంటే మార్చండి.',prev_crop:'గతంలో వేసిన పంట',prev_fert:'గతంలో వాడిన ఎరువు',none:'ఏదీ లేదు / ఖాళీ',chem:'రసాయన',organic:'సేంద్రియ',both:'రెండూ',next:'తదుపరి',back:'వెనుకకు',take_photo:'ఫోటో తీయండి',upload:'అప్‌లోడ్',analyze:'నేలను విశ్లేషించండి',analyzing:'నేలను విశ్లేషిస్తున్నాం…',soil_res:'నేల నివేదిక',stype:'నేల రకం',fertility:'సారవంతం',ph:'అంచనా pH',treat:'విత్తనానికి ముందు చికిత్స',low:'తక్కువ',medium:'మధ్యస్థం',high:'ఎక్కువ',see_crop:'పంట సిఫార్సు చూడండి',rescan:'మళ్ళీ పరీక్షించండి',photo_note:'ఇది ఫోటో ఆధారిత అంచనా మాత్రమే. ఖచ్చితత్వానికి భూసార కార్డు ల్యాబ్ పరీక్ష చేయించండి.',
+tr_fym:'ఎకరాకు 4 టన్నుల పశువుల ఎరువు వేసి దున్నండి',tr_lime:'ఆమ్లత తగ్గించడానికి ఎకరాకు సుమారు 200 కిలోల సున్నం వేయండి',tr_gypsum:'క్షార లేదా బంకమట్టి నేలకు ఎకరాకు 200 కిలోల జిప్సం, సేంద్రియ ఎరువు వేయండి',tr_compost:'ఇసుక నేలలో కంపోస్టు లేదా వర్మీకంపోస్టు కలిపి మల్చింగ్ చేయండి',tr_green:'విత్తనానికి ముందు పచ్చిరొట్ట (జీలుగ లేదా జనుము) పెంచి కలియదున్నండి',tr_ok:'నేల బాగుంది. ప్రత్యేక చికిత్స అవసరం లేదు, సాధారణ ఆధార ఎరువులు వేయండి',
+reco_t:'సిఫార్సు చేసిన పంట',reco_txt:'{crop} మీ పొలానికి అత్యుత్తమం. ఉష్ణోగ్రత {temp}°C, {soil}, {season} కాలం దీని అవసరాలకు సరిపోతాయి. అనుకూలత: {score}%.',listen:'వినండి',other_crops:'ఇతర పంటలు',why_not_q:'ఇతర పంట ఎందుకు కాదు?',tap_crop:'కారణం తెలుసుకోవడానికి పంటను నొక్కండి',choose:'ఈ పంటను ఎంచుకోండి',decide_t:'తుది పంట నిర్ణయం',acres:'పొలం పరిమాణం (ఎకరాలు)',confirm:'నిర్ధారించి ప్రణాళిక చూడండి',no_soil:'మెరుగైన కచ్చితత్వానికి ముందు నేల పరీక్ష చేయండి.',use_default:'కొనసాగండి',ask_more:'అసిస్టెంట్‌ను అడగండి',
+profits:'లాభాలు',faults:'లోపాలు',r_season:'ఇప్పుడు దీని విత్తన కాలం కాదు',r_temp:'ప్రస్తుత ఉష్ణోగ్రత {temp}°C దీనికి సరిపోదు',r_soil:'ఇది వేరే రకం నేలను ఇష్టపడుతుంది',r_rot:'గత సారి ఇదే పంట వేశారు, మళ్ళీ వేస్తే తెగుళ్లు పెరుగుతాయి',r_fine:'ఇది సరైన ఎంపికే, కానీ ఇతర పంటల స్కోరు ఎక్కువ',why_txt:'{crop} స్కోరు ఇప్పుడు {score}% ఎందుకంటే {reason}.',profit_txt:'ఎకరాకు అంచనా లాభం సుమారు {net}, వ్యవధి {days} రోజులు.',
+plan_t:'పంట ప్రణాళిక',seeds:'విత్తనాలు / నారు',fert:'ఎరువులు',pest:'తెగుళ్ల నియంత్రణ',budget:'బడ్జెట్ ప్రణాళిక',b_seed:'విత్తనం',b_fert:'ఎరువు',b_pest:'మందులు',b_labour:'కూలీ',b_irr:'నీటిపారుదల / ఇతరాలు',total_cost:'మొత్తం ఖర్చు',exp_income:'అంచనా ఆదాయం',net_profit:'నికర లాభం',duration:'వ్యవధి',days:'రోజులు',harvest:'కోత సుమారు',price_pred:'కోత సమయంలో ధర అంచనా',price_note:'₹ క్వింటాలుకు. సూచనాత్మక అంచనా, హామీ కాదు.',sow:'విత్తడం',grow:'ఎదుగుదల',flower:'పూత',harvest_s:'కోత',plan_txt:'{crop} విత్తండి. వ్యవధి {days} రోజులు. అంచనా ఖర్చు {cost}, ఆదాయం {inc}, లాభం {net}. కోత సుమారు {date}.',plan_note:'ఖర్చు, ధరలు సూచనాత్మక సగటులు. స్థానిక రేట్లు వేరుగా ఉండవచ్చు.',
+alert_t:'ఆకస్మిక వాతావరణ మార్పు',a_rain:'భారీ వర్షం / వరద',a_heat:'వడగాలి',a_drought:'కరువు',a_frost:'చలి / మంచు',a_pest:'తెగుళ్ల ఉధృతి',prevent:'ముందస్తు నివారణ',protect:'నష్టం నుండి రక్షణ',
+scheme_t:'ప్రభుత్వ పథకాలు',dmg_t:'పంట నష్టపోతే ఏం చేయాలి',dmg_txt:'పంట దెబ్బతింటే పొలం ఫోటోలు తీసి, 72 గంటల్లోపు 14447 కి కాల్ చేసి బీమా సంస్థకు తెలియజేయండి, సమీప వ్యవసాయ కార్యాలయాన్ని సంప్రదించండి.',
+ai_t:'కృషిమిత్ర అసిస్టెంట్',ai_ph:'రాయండి లేదా మాట్లాడండి…',send:'పంపండి',c_greet:'నమస్తే! నేను కృషిమిత్రను. వాతావరణం, నేల, పంటలు లేదా ప్రభుత్వ పథకాల గురించి అడగండి.',c_weather:'ఇప్పుడు {region} లో ఉష్ణోగ్రత {temp}°C, తేమ {hum}%.',c_soil:'నేల పరీక్ష ప్రారంభించడానికి కింది బటన్ నొక్కండి.',c_scheme:'పంట బీమా, పీఎం-కిసాన్, కిసాన్ క్రెడిట్ కార్డ్ అందుబాటులో ఉన్నాయి. వివరాలు కింద చూడండి.',c_crop:'ఇప్పుడు మీకు ఉత్తమ పంట {crop} ({score}%).',c_fb:'వాతావరణం, నేల, పంట సిఫార్సులు, ప్రభుత్వ పథకాల్లో సహాయం చేయగలను. పంట పేరు రాస్తే దాని లాభాలు, లోపాలు చెబుతాను.',sug1:'ఇప్పుడు ఉత్తమ పంట?',sug2:'టమోటా ఎందుకు కాదు?',sug3:'పంట బీమా',
+s_kharif:'ఖరీఫ్',s_rabi:'రబీ',s_summer:'వేసవి',logout:'లాగ్ అవుట్',open:'తెరవండి'},
+ta:{tagline:'உங்கள் ஸ்மார்ட் விவசாய நண்பன்',lang:'மொழி',login_t:'வணக்கம், விவசாயியே!',login_s:'மொபைல் எண்ணுடன் உள்நுழையுங்கள்',phone:'மொபைல் எண்',send_otp:'OTP அனுப்பு',otp_t:'4 இலக்க OTP உள்ளிடவும்',otp_hint:'டெமோ OTP: 1234',verify:'சரிபார்',bad_phone:'சரியான 10 இலக்க எண்ணை உள்ளிடவும்',bad_otp:'தவறான OTP',
+perm_t:'அனுமதிகளை வழங்கவும்',perm_s:'இதனால் கிருஷிமித்ரா சிறந்த ஆலோசனை தர முடியும்',loc:'இருப்பிடம்',loc_d:'வானிலை, பகுதி சார்ந்த ஆலோசனை',cam:'கேமரா',cam_d:'மண், பயிர் படங்கள்',mic:'மைக்ரோஃபோன்',mic_d:'உதவியாளருடன் பேசுங்கள்',allow:'அனுமதி',allowed:'அனுமதிக்கப்பட்டது',cont:'தொடரவும்',
+hello:'வணக்கம்',search_ph:'எதையும் கேளுங்கள் அல்லது தேடுங்கள்…',weather:'இன்றைய வானிலை',humidity:'ஈரப்பதம்',wind:'காற்று',rain:'மழை',outlook:'5 நாள் முன்னறிவிப்பு',
+w_clear:'தெளிவு',w_cloud:'மேகமூட்டம்',w_rain:'மழை',w_storm:'இடியுடன் மழை',w_fog:'பனிமூட்டம்',
+n_home:'முகப்பு',n_soil:'மண்',n_crop:'பயிர்',n_ask:'AI கேள்',n_more:'மேலும்',
+q_soil:'மண் சோதனை',q_crop:'சிறந்த பயிர்',q_plan:'பயிர் திட்டம்',q_alert:'வானிலை எச்சரிக்கை',q_scheme:'அரசு திட்டங்கள்',q_ask:'உதவியாளர்',
+soil_t:'மண் வளம் சோதனை',st1:'பகுதி',st2:'முந்தைய பயிர்',st3:'மண் படம்',region:'உங்கள் பகுதி',region_d:'இருப்பிடத்தில் இருந்து கண்டறியப்பட்டது. தேவையெனில் மாற்றவும்.',prev_crop:'முன்பு பயிரிட்ட பயிர்',prev_fert:'முன்பு பயன்படுத்திய உரம்',none:'எதுவும் இல்லை / தரிசு',chem:'ரசாயனம்',organic:'இயற்கை',both:'இரண்டும்',next:'அடுத்து',back:'பின்',take_photo:'படம் எடு',upload:'பதிவேற்று',analyze:'மண்ணை ஆய்வு செய்',analyzing:'மண் ஆய்வு நடக்கிறது…',soil_res:'மண் அறிக்கை',stype:'மண் வகை',fertility:'வளம்',ph:'மதிப்பிட்ட pH',treat:'விதைப்புக்கு முன் சிகிச்சை',low:'குறைவு',medium:'நடுத்தரம்',high:'அதிகம்',see_crop:'பயிர் பரிந்துரையைப் பார்',rescan:'மீண்டும் சோதிக்க',photo_note:'இது படத்தை அடிப்படையாகக் கொண்ட மதிப்பீடு. உறுதிக்கு மண் ஆரோக்கிய அட்டை ஆய்வகச் சோதனை செய்யுங்கள்.',
+tr_fym:'ஏக்கருக்கு 4 டன் தொழு உரம் இட்டு உழவு செய்யவும்',tr_lime:'அமிலத்தன்மை குறைக்க ஏக்கருக்கு சுமார் 200 கிலோ சுண்ணாம்பு இடவும்',tr_gypsum:'களர் அல்லது களிமண்ணுக்கு ஏக்கருக்கு 200 கிலோ ஜிப்சம் மற்றும் இயற்கை உரம் இடவும்',tr_compost:'மணல் மண்ணில் மக்கிய உரம் அல்லது மண்புழு உரம் கலந்து மூடாக்கு இடவும்',tr_green:'விதைப்புக்கு முன் பசுந்தாள் உரம் (தக்கைப்பூண்டு) வளர்த்து மடக்கி உழவும்',tr_ok:'மண் நன்றாக உள்ளது. சிறப்பு சிகிச்சை தேவையில்லை, வழக்கமான அடியுரம் இடவும்',
+reco_t:'பரிந்துரைக்கப்பட்ட பயிர்',reco_txt:'{crop} உங்கள் வயலுக்கு மிகவும் ஏற்றது. வெப்பநிலை {temp}°C, {soil}, {season} பருவம் இதன் தேவைக்குப் பொருந்துகின்றன. பொருத்தம்: {score}%.',listen:'கேள்',other_crops:'மற்ற பயிர்கள்',why_not_q:'மற்ற பயிர் ஏன் வேண்டாம்?',tap_crop:'காரணம் அறிய பயிரைத் தொடவும்',choose:'இந்த பயிரைத் தேர்ந்தெடு',decide_t:'இறுதி பயிர் முடிவு',acres:'நில அளவு (ஏக்கர்)',confirm:'உறுதிசெய்து திட்டத்தைப் பார்',no_soil:'சிறந்த துல்லியத்திற்கு முதலில் மண் சோதனை செய்யவும்.',use_default:'தொடரவும்',ask_more:'உதவியாளரிடம் கேளுங்கள்',
+profits:'நன்மைகள்',faults:'குறைகள்',r_season:'இப்போது இதன் விதைப்புப் பருவம் அல்ல',r_temp:'தற்போதைய வெப்பநிலை {temp}°C இதற்குப் பொருந்தாது',r_soil:'இது வேறு வகை மண்ணை விரும்புகிறது',r_rot:'கடந்த முறை இதே பயிர், மீண்டும் பயிரிட்டால் நோய் மற்றும் பூச்சி அதிகரிக்கும்',r_fine:'இது ஏற்ற தேர்வுதான், ஆனால் மற்ற பயிர்களின் மதிப்பெண் அதிகம்',why_txt:'{crop} மதிப்பெண் இப்போது {score}% ஏனெனில் {reason}.',profit_txt:'ஏக்கருக்கு மதிப்பிட்ட லாபம் சுமார் {net}, காலம் {days} நாட்கள்.',
+plan_t:'பயிர் திட்டம்',seeds:'விதை / நாற்று',fert:'உரங்கள்',pest:'பூச்சி நோய் கட்டுப்பாடு',budget:'பட்ஜெட் திட்டம்',b_seed:'விதை',b_fert:'உரம்',b_pest:'மருந்து',b_labour:'கூலி',b_irr:'நீர்ப்பாசனம் / பிற',total_cost:'மொத்த செலவு',exp_income:'எதிர்பார்க்கும் வருமானம்',net_profit:'நிகர லாபம்',duration:'காலம்',days:'நாட்கள்',harvest:'அறுவடை சுமார்',price_pred:'அறுவடை நேர விலை மதிப்பீடு',price_note:'₹ குவிண்டாலுக்கு. குறிப்பிட்ட மதிப்பீடு, உத்தரவாதம் அல்ல.',sow:'விதைப்பு',grow:'வளர்ச்சி',flower:'பூக்கும் நிலை',harvest_s:'அறுவடை',plan_txt:'{crop} விதைக்கவும். காலம் {days} நாட்கள். மதிப்பிட்ட செலவு {cost}, வருமானம் {inc}, லாபம் {net}. அறுவடை சுமார் {date}.',plan_note:'செலவு மற்றும் விலை குறிப்பிட்ட சராசரிகள். உள்ளூர் விலை வேறுபடலாம்.',
+alert_t:'திடீர் வானிலை மாற்றம்',a_rain:'கனமழை / வெள்ளம்',a_heat:'வெப்ப அலை',a_drought:'வறட்சி',a_frost:'குளிர் / பனி',a_pest:'பூச்சி தாக்குதல்',prevent:'முன்கூட்டிய தடுப்பு',protect:'இழப்பிலிருந்து பாதுகாப்பு',
+scheme_t:'அரசு திட்டங்கள்',dmg_t:'பயிர் சேதமடைந்தால் என்ன செய்வது',dmg_txt:'பயிர் சேதமடைந்தால் வயலைப் படம் எடுத்து, 72 மணி நேரத்திற்குள் 14447 எண்ணில் காப்பீட்டு நிறுவனத்திற்குத் தெரிவித்து, அருகிலுள்ள வேளாண் அலுவலகத்தை அணுகவும்.',
+ai_t:'கிருஷிமித்ரா உதவியாளர்',ai_ph:'எழுதுங்கள் அல்லது பேசுங்கள்…',send:'அனுப்பு',c_greet:'வணக்கம்! நான் கிருஷிமித்ரா. வானிலை, மண், பயிர் அல்லது அரசு திட்டங்கள் பற்றி கேளுங்கள்.',c_weather:'இப்போது {region} இல் வெப்பநிலை {temp}°C, ஈரப்பதம் {hum}%.',c_soil:'மண் சோதனையைத் தொடங்க கீழே உள்ள பொத்தானை அழுத்தவும்.',c_scheme:'பயிர் காப்பீடு, பிஎம்-கிசான், கிசான் கிரெடிட் கார்டு உள்ளன. விவரம் கீழே.',c_crop:'இப்போது உங்களுக்கு சிறந்த பயிர் {crop} ({score}%).',c_fb:'வானிலை, மண், பயிர் பரிந்துரை, அரசு திட்டங்களில் உதவ முடியும். பயிரின் பெயர் எழுதினால் அதன் நன்மை குறைகளைச் சொல்வேன்.',sug1:'இப்போது சிறந்த பயிர்?',sug2:'தக்காளி ஏன் வேண்டாம்?',sug3:'பயிர் காப்பீடு',
+s_kharif:'காரீப்',s_rabi:'ராபி',s_summer:'கோடை',logout:'வெளியேறு',open:'திற'}
+};
+const t=k=>(L[app.lang]&&L[app.lang][k])||L.en[k]||k;
+const fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(m,k)=>o[k]!==undefined?o[k]:m);
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=s=>document.querySelector(s);
+
+/* ===================== data ===================== */
+const SOILN={red:{en:'Red soil',hi:'लाल मिट्टी',kn:'ಕೆಂಪು ಮಣ್ಣು',te:'ఎర్ర నేల',ta:'செம்மண்'},black:{en:'Black soil',hi:'काली मिट्टी',kn:'ಕಪ್ಪು ಮಣ್ಣು',te:'నల్ల రేగడి నేల',ta:'கரிசல் மண்'},sandy:{en:'Sandy soil',hi:'रेतीली मिट्टी',kn:'ಮರಳು ಮಣ್ಣು',te:'ఇసుక నేల',ta:'மணல் மண்'},loam:{en:'Loamy soil',hi:'दोमट मिट्टी',kn:'ಗೋಡು ಮಣ್ಣು',te:'గరప నేల',ta:'வண்டல் மண்'}};
+const PH={red:[5.8,6.5],black:[7.2,8.0],sandy:[6.0,7.0],loam:[6.5,7.2]};
+const CROPS={
+ragi:{icon:'🌾',n:{en:'Ragi (Finger millet)',hi:'रागी',kn:'ರಾಗಿ',te:'రాగి',ta:'கேழ்வரகு'},fam:'cereal',seasons:['kharif','rabi'],T:[18,32],soils:['red','loam'],days:110,yield:8,price:4300,trend:.06,hardy:true,cost:[600,2800,900,6200,1500],
+ seeds:['Variety: MR-1 / GPU-28 / ML-365','Seed rate: 4 kg per acre (nursery for transplanting: 25 days)','Seed treatment: Trichoderma 4 g per kg seed'],
+ fert:['Basal: FYM 4 t/acre plus about 20 kg N, 16 kg P₂O₅, 10 kg K₂O','Top-dress: 10 kg N at 30 days after sowing','Bio-fertilizer: Azospirillum + PSB with FYM'],
+ pest:['Blast: spray only if leaf lesions appear, on agriculture officer advice','Stem borer: neem oil 5 ml per litre','Bird perches and light traps help'],
+ pros:['Low water need and hardy in poor soil','Low cost with steady demand and MSP support','Nutritious grain and good fodder straw'],cons:['Income per acre lower than vegetables','Needs timely weeding','Yield drops if rain fails at flowering']},
+maize:{icon:'🌽',n:{en:'Maize',hi:'मक्का',kn:'ಮೆಕ್ಕೆಜೋಳ',te:'మొక్కజొన్న',ta:'மக்காச்சோளம்'},fam:'cereal',seasons:['kharif','rabi'],T:[20,32],soils:['red','loam','black'],days:110,yield:22,price:2200,trend:.04,cost:[2200,5000,1800,9000,4000],
+ seeds:['Hybrid maize seed (certified)','Seed rate: 8 kg per acre, spacing 60 x 20 cm','Treat seed with thiram or a bio agent'],
+ fert:['Basal: FYM 4 t/acre plus 16 kg N, 24 kg P₂O₅, 16 kg K₂O','Top-dress N in 2 splits: knee-high stage and tasseling','Zinc sulphate 10 kg/acre if deficiency is seen'],
+ pest:['Fall armyworm: scout weekly, neem oil first, chemicals only on expert advice','Stem borer: release Trichogramma cards','Maintain field hygiene and remove residues'],
+ pros:['Good yield and strong poultry-feed demand','Short duration of about 110 days','Fits well in rotation after legumes'],cons:['Heavy feeder, needs good fertilizer','Fall armyworm risk','Sensitive to waterlogging']},
+groundnut:{icon:'🥜',n:{en:'Groundnut',hi:'मूंगफली',kn:'ಶೇಂಗಾ',te:'వేరుశనగ',ta:'நிலக்கடலை'},fam:'legume',seasons:['kharif','rabi','summer'],T:[22,33],soils:['red','sandy','loam'],days:110,yield:7,price:6500,trend:.05,cost:[6000,5000,2000,9000,4000],
+ seeds:['Variety: TMV-2 / K-6 / GPBD-4','Seed rate: 50 to 60 kg kernels per acre','Treat with Rhizobium and Trichoderma'],
+ fert:['Basal: FYM 4 t/acre plus 8 kg N, 16 kg P₂O₅, 16 kg K₂O','Gypsum 200 kg/acre at flowering (pegging)','Avoid excess nitrogen as it fixes its own'],
+ pest:['Tikka leaf spot: spray on expert advice if spots appear','Leaf miner and aphids: neem oil, yellow sticky traps','Keep fields weed-free for the first 40 days'],
+ pros:['Fixes nitrogen and improves soil for next crop','High market price and oil demand','Fits red and light soils well'],cons:['Needs well-drained soil','Aflatoxin risk if dried badly','Higher seed cost']},
+tomato:{icon:'🍅',n:{en:'Tomato',hi:'टमाटर',kn:'ಟೊಮೇಟೊ',te:'టమోటా',ta:'தக்காளி'},fam:'veg',seasons:['kharif','rabi','summer'],T:[18,30],soils:['red','loam'],days:120,yield:90,price:1800,trend:.15,cost:[8000,15000,9000,38000,15000],
+ seeds:['Hybrid seedlings, about 7,000 per acre','Raise nursery 25 days in protrays','Spacing 90 x 45 cm with staking'],
+ fert:['Basal: FYM 10 t/acre plus 40 kg N, 30 kg P₂O₅, 30 kg K₂O','Fertigate or top-dress N and K every 15 days','Calcium nitrate spray to prevent blossom-end rot'],
+ pest:['Leaf curl virus: yellow sticky traps, control whitefly','Early blight: copper fungicide on expert advice','Fruit borer: pheromone traps and neem'],
+ pros:['Highest income potential per acre','Continuous harvest for several weeks','Strong demand from nearby markets'],cons:['Prices swing a lot and can crash','High cost and labour','High pest and disease pressure']},
+paddy:{icon:'🍚',n:{en:'Paddy (Rice)',hi:'धान (चावल)',kn:'ಭತ್ತ',te:'వరి',ta:'நெல்'},fam:'cereal',seasons:['kharif','rabi'],T:[22,34],soils:['black','loam'],days:130,yield:22,price:2300,trend:.03,cost:[1500,6000,2500,14000,6000],
+ seeds:['Variety: IR-64 / MTU-1010 / local short-duration','Seed rate: 25 kg per acre for nursery','Transplant 21-day seedlings, 2 per hill'],
+ fert:['Basal: FYM 4 t/acre plus 16 kg N, 8 kg P₂O₅, 8 kg K₂O','Top-dress N in 2 splits at tillering and panicle initiation','Azolla or green manure can cut fertilizer use'],
+ pest:['Stem borer: pheromone traps, release Trichogramma','Blast: spray only on expert advice','Brown planthopper: avoid excess N, drain water briefly'],
+ pros:['Staple crop with assured procurement','Good yield where water is available','Suited to heavy black soils'],cons:['Needs a lot of water','Lower profit margin than vegetables','Methane and labour heavy']},
+sunflower:{icon:'🌻',n:{en:'Sunflower',hi:'सूरजमुखी',kn:'ಸೂರ್ಯಕಾಂತಿ',te:'పొద్దుతిరుగుడు',ta:'சூரியகாந்தி'},fam:'oilseed',seasons:['rabi','summer'],T:[20,32],soils:['black','red','loam'],days:100,yield:5,price:7000,trend:.04,cost:[1800,4200,1500,7500,3000],
+ seeds:['Hybrid sunflower seed (certified)','Seed rate: 2 to 2.5 kg per acre, spacing 60 x 30 cm','Treat seed with Trichoderma'],
+ fert:['Basal: FYM 4 t/acre plus 24 kg N, 24 kg P₂O₅, 16 kg K₂O','Top-dress 12 kg N at 30 days','Boron 1 kg/acre improves seed filling'],
+ pest:['Alternaria leaf spot: expert-advised fungicide','Head borer: neem oil and traps','Keep honeybees in the field for better pollination'],
+ pros:['Short duration and low water need','Good oilseed price','Fits well in rabi and summer'],cons:['Bird damage at maturity','Poor seed set without pollinators','Price depends on edible oil imports']}
+};
+const SCHEMES=[
+['🛡️','PM Fasal Bima Yojana (PMFBY)','Crop insurance against yield loss from drought, flood, pests, disease, hail and cyclone. Farmer premium is about 2% for kharif, 1.5% for rabi and 5% for commercial or horticulture crops.','Enrol before the cut-off date through your bank, CSC or the crop insurance portal. After damage, inform the insurer within 72 hours (helpline 14447).'],
+['💰','PM-KISAN','Income support of ₹6,000 per year in three instalments, paid directly to the bank account of eligible landholding farmers.','Register on pmkisan.gov.in with Aadhaar, bank account and land records.'],
+['💳','Kisan Credit Card (KCC)','Low-interest crop loans with interest subvention for timely repayment, plus insurance cover options.','Apply at your bank or cooperative society with land documents.'],
+['🧪','Soil Health Card','Free soil testing and a fertilizer recommendation for your fields, renewed every two years.','Visit the nearest agriculture office or KVK to submit a soil sample.'],
+['🌧️','SDRF / NDRF relief','Input subsidy or compensation after officially notified calamities such as flood, drought or hailstorm.','Report the loss to the Revenue and Agriculture department so a crop-loss survey is done.'],
+['📈','eNAM','Online mandi platform for wider buyers and better price discovery.','Register on enam.gov.in and sell at your nearest linked mandi.'],
+['🏢','Raitha Samparka Kendra / KVK','Local help centre for seeds, subsidies, scheme forms and expert advice. Kisan Call Centre: 1800-180-1551.','Walk in with your Aadhaar and land records.']];
+const ALERTS={
+rain:{i:'🌧️',pre:['Dig drainage channels and repair field bunds before the forecast','Use raised beds for vegetables like tomato','Store seed, fertilizer and produce in a dry, raised place','Avoid fertilizer and spraying 2 days before heavy rain'],pro:['Drain standing water within 24 hours','Stake and tie tall crops like maize and tomato to stop lodging','Spray copper-based fungicide after rain to stop fungal spread','Take photos and report loss within 72 hours for insurance']},
+heat:{i:'🔥',pre:['Mulch with straw or dry leaves to cut moisture loss','Irrigate early morning or evening, not midday','Use shade nets for nurseries and young vegetables'],pro:['Give light, frequent irrigation during the hot spell','Spray 1% potassium nitrate to improve heat tolerance','Avoid weeding and spraying in the afternoon','Harvest early in the morning']},
+drought:{i:'🏜️',pre:['Adopt drip or sprinkler irrigation and build farm ponds','Choose short-duration, drought-tolerant crops like ragi','Add FYM or compost so soil holds more water'],pro:['Give irrigation priority to flowering and grain filling','Mulch and remove weeds to cut competition for water','Spray 1% potassium chloride to reduce water stress','Check PMFBY and drought relief eligibility with the agriculture office']},
+frost:{i:'❄️',pre:['Irrigate lightly in the evening before a cold night','Plant windbreaks such as glyricidia on the cold-wind side'],pro:['Cover nurseries and young plants with straw or plastic at night','Light smoky fires at the field edge on very cold nights','Avoid pruning and nitrogen top-dressing in cold spells']},
+pest:{i:'🐛',pre:['Scout fields twice a week; use yellow sticky and pheromone traps','Use certified seed treated with Trichoderma or Pseudomonas','Rotate crops and clear last season residue'],pro:['Spray neem oil 5 ml per litre as the first response','Use chemical pesticides only on KVK or officer advice, with correct dose and waiting period','Remove and destroy badly infected plants','Call Kisan Call Centre 1800-180-1551 for help']}};
+
+/* ===================== state ===================== */
+const app={lang:'en',phone:'',otpSent:false,geo:null,weather:null,region:'',loadingW:false,perm:{loc:false,cam:false,mic:false},screen:'splash',
+ prevCrop:'none',prevFert:'none',photo:null,soil:null,soilStep:1,analyzing:false,reco:[],chosen:null,acres:1,chat:[],pendingQ:null,pendingVoice:false,alertTab:'rain'};
+try{const sv=JSON.parse(localStorage.getItem('km')||'{}');if(sv.lang&&L[sv.lang])app.lang=sv.lang;}catch(e){}
+const save=()=>{try{localStorage.setItem('km',JSON.stringify({lang:app.lang}))}catch(e){}};
+const cn=id=>CROPS[id].n[app.lang]||CROPS[id].n.en;
+const soilName=ty=>SOILN[ty][app.lang]||SOILN[ty].en;
+const season=()=>{const m=new Date().getMonth()+1;return m>=6&&m<=10?'kharif':(m>=11||m<=2)?'rabi':'summer'};
+const fdate=d=>d.toLocaleDateString(LC[app.lang],{day:'numeric',month:'short',year:'numeric'});
+
+/* ===================== helpers ===================== */
+const IC={
+cam:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+mic:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+spk:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
+send:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'};
+let toastT;
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),2600)}
+function showModal(h,cls){$('#sheet').className='sheet '+(cls||'');$('#sheet').innerHTML=h;$('#modal').classList.add('open')}
+function closeModal(){$('#modal').classList.remove('open');stopStream()}
+function speak(text){
+  if(!('speechSynthesis' in window)){toast(t('no_tts'));return}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=LC[app.lang];
+  const vs=speechSynthesis.getVoices();const v=vs.find(x=>x.lang.replace('_','-')===LC[app.lang])||vs.find(x=>x.lang.toLowerCase().startsWith(app.lang));
+  if(v)u.voice=v;u.rate=.92;speechSynthesis.speak(u);
+}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{};
+function listen(cb){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast(t('no_sr'));return}
+  const r=new SR();r.lang=LC[app.lang];r.interimResults=false;r.maxAlternatives=1;
+  r.onresult=e=>cb(e.results[0][0].transcript);r.onerror=()=>toast(t('no_sr'));r.onend=()=>document.body.classList.remove('listening');
+  document.body.classList.add('listening');try{r.start()}catch(e){document.body.classList.remove('listening')}
+}
+let stream=null,facing='environment',camCb=null;
+function stopStream(){if(stream){stream.getTracks().forEach(x=>x.stop());stream=null}}
+async function startStream(){
+  try{stopStream();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing}});const v=$('#vid');if(v)v.srcObject=stream}
+  catch(e){closeModal();toast(t('cam_fail'))}
+}
+function openCam(cb){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast(t('cam_fail'));return}
+  camCb=cb;
+  showModal('<video id="vid" autoplay playsinline muted></video><div class="camctl"><button class="rb" onclick="closeModal()">✕</button><button class="shutter" onclick="snap()"></button><button class="rb" onclick="flipCam()">⟲</button></div>','cam');
+  startStream();
+}
+function flipCam(){facing=facing==='environment'?'user':'environment';startStream()}
+function snap(){
+  const v=$('#vid');if(!v||!v.videoWidth)return;const c=document.createElement('canvas');const sc=Math.min(1,720/v.videoWidth);
+  c.width=v.videoWidth*sc;c.height=v.videoHeight*sc;c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+  const url=c.toDataURL('image/jpeg',.85);closeModal();if(camCb)camCb(url);
+}
+
+/* ===================== weather ===================== */
+const wxIcon=c=>c===0?'☀️':c<=2?'🌤️':c===3?'☁️':(c===45||c===48)?'🌫️':(c>=71&&c<=77)?'❄️':(c>=95)?'⛈️':(c>=80&&c<=82)?'🌦️':'🌧️';
+const wxKey=c=>c<=1?'w_clear':c<=3?'w_cloud':(c===45||c===48)?'w_fog':c>=95?'w_storm':'w_rain';
+function demoWeather(){const days=[];for(let i=0;i<5;i++){const d=new Date();d.setDate(d.getDate()+i);days.push({d:d.toISOString().slice(0,10),max:28+(i%2),min:19,p:i===3?12:0,c:i===3?61:2})}return{temp:26,hum:64,wind:11,code:2,rain:0,days}}
+async function loadRegion(){
+  try{const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${app.geo.lat}&longitude=${app.geo.lon}&localityLanguage=en`);const d=await r.json();
+  app.region=[d.city||d.locality,d.principalSubdivision].filter(Boolean).join(', ')}catch(e){}
+  if(!app.region)app.region='Karnataka, India';
+}
+async function loadWeather(){
+  if(app.loadingW)return;app.loadingW=true;const g=app.geo||{lat:12.97,lon:77.59};
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${g.lat}&longitude=${g.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&timezone=auto&forecast_days=5`);
+    const d=await r.json();
+    app.weather={temp:Math.round(d.current.temperature_2m),hum:d.current.relative_humidity_2m,wind:Math.round(d.current.wind_speed_10m),code:d.current.weather_code,rain:d.current.precipitation,night:d.current.is_day===0,
+      days:d.daily.time.map((x,i)=>({d:x,max:Math.round(d.daily.temperature_2m_max[i]),min:Math.round(d.daily.temperature_2m_min[i]),p:d.daily.precipitation_sum[i],c:d.daily.weather_code[i]}))};
+  }catch(e){app.weather=demoWeather()}
+  if(app.geo&&!app.region)await loadRegion();else if(!app.region)app.region='Karnataka, India';
+  app.loadingW=false;if(app.screen==='home')render();
+}
+
+/* ===================== recommendation engine ===================== */
+function computeReco(){
+  const temp=app.weather?app.weather.temp:26;const st=app.soil||{type:'loam',fert:60};const prev=CROPS[app.prevCrop];const sea=season();
+  app.reco=Object.entries(CROPS).map(([id,c])=>{
+    let s=55;const reasons=[];
+    if(c.seasons.includes(sea))s+=15;else{s-=18;reasons.push('r_season')}
+    if(temp>=c.T[0]&&temp<=c.T[1])s+=12;else{s-=Math.min(20,(temp<c.T[0]?c.T[0]-temp:temp-c.T[1])*2);reasons.push('r_temp')}
+    if(c.soils.includes(st.type))s+=12;else{s-=8;reasons.push('r_soil')}
+    if(app.prevCrop===id){s-=20;reasons.push('r_rot')}
+    else if(prev){if(prev.fam==='legume'&&c.fam!=='legume')s+=8;if(prev.fam==='cereal'&&c.fam==='legume')s+=8}
+    if(st.fert<45)s+=c.hardy?5:-6;else if(st.fert>70)s+=3;
+    return{id,score:Math.round(Math.max(35,Math.min(97,s))),reasons};
+  }).sort((a,b)=>b.score-a.score);
+}
+function planData(id,acres){
+  const c=CROPS[id];const ph=c.price*(1+c.trend);const cost=c.cost.reduce((a,b)=>a+b,0)*acres;const inc=c.yield*ph*acres;
+  const sow=new Date();sow.setDate(sow.getDate()+3);const hv=new Date(sow);hv.setDate(hv.getDate()+c.days);
+  const stage=f=>{const d=new Date(sow);d.setDate(d.getDate()+Math.round(c.days*f));return d};
+  const series=[];for(let i=0;i<6;i++){const d=new Date(sow);d.setDate(d.getDate()+Math.round(c.days*i/5));
+    const v=i===5?ph:c.price*(1+c.trend*i/5)*(1+.025*Math.sin(i*1.7+id.length));series.push({d,v})}
+  return{cost,inc,net:inc-cost,ph,sow,hv,grow:stage(.35),flower:stage(.65),series,parts:c.cost.map(x=>x*acres)};
+}
+function netPerAcre(id){const p=planData(id,1);return p.net}
+
+/* ===================== navigation ===================== */
+const TAB={home:'home',soil:'soil',reco:'crop',decide:'crop',plan:'crop',ai:'ai',more:'more',alerts:'more',schemes:'more'};
+function go(s){app.screen=s;render()}
+function langSel(){return `<select class="lang" onchange="setLang(this.value)">${Object.entries(LANGS).map(([k,v])=>`<option value="${k}"${k===app.lang?' selected':''}>${v}</option>`).join('')}</select>`}
+function setLang(v){app.lang=v;save();if('speechSynthesis' in window)speechSynthesis.cancel();render()}
+function bar(title,back){return `<div class="bar">${back?`<button class="bk" onclick="go('${back}')">‹</button>`:''}<h2>${title}</h2>${langSel()}</div>`}
+function renderNav(){
+  const it=[['home','🏠','n_home','home'],['soil','🌱','n_soil','soil'],['crop','🌾','n_crop','reco'],['ai','💬','n_ask','ai'],['more','☰','n_more','more']];
+  $('#nav').innerHTML=it.map(i=>`<button class="${TAB[app.screen]===i[0]?'on':''}" onclick="go('${i[3]}')"><span>${i[1]}</span><small>${t(i[2])}</small></button>`).join('');
+}
+function render(){
+  const s=app.screen;$('#splash').classList.toggle('hide',s!=='splash');
+  if(s==='splash')return;
+  const full=['login','perm'].includes(s);$('#nav').style.display=full?'none':'flex';$('#view').classList.toggle('nonav',full);
+  $('#view').innerHTML=R[s]();$('#view').scrollTop=0;if(AFTER[s])AFTER[s]();if(!full)renderNav();
+}
+
+/* ===================== screens ===================== */
+const R={};const AFTER={};
+/* login */
+function phoneHtml(){return `<h2>${t('login_t')}</h2><p class="s">${t('login_s')}</p>
+ <label class="l">${t('phone')}</label><div class="phone-in" style="margin-top:8px"><b>+91</b><input id="ph" type="tel" inputmode="numeric" maxlength="10" placeholder="98XXXXXXXX" value="${esc(app.phone)}" onkeydown="if(event.key==='Enter')sendOtp()"></div>
+ <button class="btn" onclick="sendOtp()">${t('send_otp')} →</button>`}
+function otpHtml(){return `<h2>${t('otp_t')}</h2><p class="s">+91 ${esc(app.phone)}</p>
+ <div class="otps">${[0,1,2,3].map(i=>`<input class="otp" maxlength="1" inputmode="numeric" oninput="otpIn(this,${i})" onkeydown="otpKey(event,${i})">`).join('')}</div>
+ <p class="hint">${t('otp_hint')}</p><button class="btn" onclick="verifyOtp()">${t('verify')}</button>
+ <button class="btn alt" onclick="app.otpSent=false;render()">${t('back')}</button>`}
+R.login=()=>`<div class="login"><div class="lg-top"><div class="lgsel">${langSel()}</div><div class="logo-sm"><svg viewBox="0 0 120 120" width="54" height="54"><path d="M60 98 C60 80 60 66 60 52" stroke="#d8f3a0" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M60 62 C40 62 28 50 26 34 C44 34 58 44 60 62Z" fill="#9be37a"/><path d="M60 52 C80 52 92 40 94 24 C76 24 62 34 60 52Z" fill="#52c57a"/></svg></div><h1>KrushiMithra</h1><p>${t('tagline')}</p></div><div class="lg-card" id="lgc">${app.otpSent?otpHtml():phoneHtml()}</div></div>`;
+function sendOtp(){const v=($('#ph').value||'').replace(/\D/g,'');if(!/^[6-9]\d{9}$/.test(v)){toast(t('bad_phone'));return}app.phone=v;app.otpSent=true;$('#lgc').innerHTML=otpHtml();const f=document.querySelector('.otp');if(f)f.focus()}
+function otpIn(el,i){el.value=el.value.replace(/\D/g,'');const all=[...document.querySelectorAll('.otp')];if(el.value&&all[i+1])all[i+1].focus();if(all.every(x=>x.value))verifyOtp()}
+function otpKey(e,i){if(e.key==='Backspace'&&!e.target.value&&i>0)document.querySelectorAll('.otp')[i-1].focus()}
+function verifyOtp(){const c=[...document.querySelectorAll('.otp')].map(x=>x.value).join('');if(c==='1234')go('perm');else toast(t('bad_otp'))}
+/* permissions */
+R.perm=()=>{const P=(k,e,a)=>`<div class="pc"><div class="e">${e}</div><div class="sp"><b>${t(k)}</b><br><small>${t(k+'_d')}</small></div>${app.perm[k]?`<span class="ok">✓ ${t('allowed')}</span>`:`<button class="btn sm" onclick="${a}()">${t('allow')}</button>`}</div>`;
+ return `<div class="perm"><div class="row"><div class="sp"></div>${langSel()}</div><h2>🔐 ${t('perm_t')}</h2><p class="s">${t('perm_s')}</p>${P('loc','📍','reqLoc')}${P('cam','📷','reqCam')}${P('mic','🎙️','reqMic')}<button class="btn gold" onclick="go('home')">${t('cont')} →</button></div>`};
+function reqLoc(){if(!navigator.geolocation){toast(t('perm_denied'));return}navigator.geolocation.getCurrentPosition(p=>{app.geo={lat:p.coords.latitude,lon:p.coords.longitude};app.perm.loc=true;app.weather=null;app.region='';render()},()=>toast(t('perm_denied')),{timeout:12000,maximumAge:600000})}
+async function reqCam(){try{const s=await navigator.mediaDevices.getUserMedia({video:true});s.getTracks().forEach(x=>x.stop());app.perm.cam=true;render()}catch(e){toast(t('perm_denied'))}}
+async function reqMic(){try{const s=await navigator.mediaDevices.getUserMedia({audio:true});s.getTracks().forEach(x=>x.stop());app.perm.mic=true;render()}catch(e){toast(t('perm_denied'))}}
+/* home */
+R.home=()=>{
+  const w=app.weather;let wx='<div class="skel"></div>',warn='';
+  if(w){
+    wx=`<div class="wx ${w.night?'night':''}"><div class="row"><div><div class="big">${w.temp}°C</div><div style="margin-top:4px;font-weight:600">${t(wxKey(w.code))}</div><small style="opacity:.85">📍 ${esc(app.region||'')}</small></div><div class="sp"></div><div class="ic">${wxIcon(w.code)}</div></div>
+    <div class="st"><div>💧<b>${w.hum}%</b>${t('humidity')}</div><div>🌬️<b>${w.wind} km/h</b>${t('wind')}</div><div>🌧️<b>${w.rain} mm</b>${t('rain')}</div></div>
+    <div class="days">${w.days.map(d=>`<div>${new Date(d.d).toLocaleDateString(LC[app.lang],{weekday:'short'})}<br><span style="font-size:18px">${wxIcon(d.c)}</span><br><b>${d.max}°</b> <span style="opacity:.7">${d.min}°</span></div>`).join('')}</div></div>`;
+    if(w.days.some(d=>d.p>=30))warn=`<div class="note warn" style="margin-top:14px" onclick="app.alertTab='rain';go('alerts')">⚠️ ${t('warn_rain')}</div>`;
+    else if(w.days.some(d=>d.max>=37))warn=`<div class="note warn" style="margin-top:14px" onclick="app.alertTab='heat';go('alerts')">⚠️ ${t('warn_heat')}</div>`;
+  }
+  const T=(e,bg,k,to)=>`<button class="tile" onclick="${to}"><div class="e" style="background:${bg}">${e}</div><b>${t(k)}</b></button>`;
+  return `<div class="hero"><div class="top"><div><small>${t('hello')} 🙏</small><h2>KrushiMithra</h2></div>${langSel()}</div>
+   <div class="search"><input id="q" placeholder="${t('search_ph')}" onkeydown="if(event.key==='Enter')searchGo()"><button onclick="camSearch()">${IC.cam}</button><button class="mic" onclick="micSearch()">${IC.mic}</button></div></div>
+  <div class="wrap">${wx}${warn}
+  <div class="tiles">${T('🌱','#e6f5ea','q_soil',"app.soilStep=1;go('soil')")}${T('🌾','#fff3d6','q_crop',"go('reco')")}${T('📋','#e3f0ff','q_plan',"go('decide')")}${T('⛈️','#fde8e6','q_alert',"go('alerts')")}${T('🏛️','#efe6ff','q_scheme',"go('schemes')")}${T('🤖','#dff7f0','q_ask',"go('ai')")}</div></div>`};
+AFTER.home=()=>{if(!app.weather)loadWeather()};
+function searchGo(){const v=($('#q').value||'').trim();if(!v)return;app.pendingQ=v;app.pendingVoice=false;go('ai')}
+function micSearch(){listen(txt=>{app.pendingQ=txt;app.pendingVoice=true;go('ai')})}
+function camSearch(){app.soilStep=3;app.soil=null;go('soil');openCam(url=>{app.photo=url;render()})}
+/* soil */
+function stepsHtml(n){return `<div class="steps">${[1,2,3].map(i=>`<div class="${i<=n?'on':''}"><i></i>${t('st'+i)}</div>`).join('')}</div>`}
+R.soil=()=>{
+  if(app.analyzing)return bar(t('soil_t'),'home')+`<div class="wrap"><div class="photo scan" style="background-image:url(${app.photo})"></div><p style="text-align:center;margin-top:16px;font-weight:600">${t('analyzing')}</p></div>`;
+  if(app.soil)return soilResult();
+  const n=app.soilStep;let body='';
+  if(n===1)body=`<div class="card"><h3>📍 ${t('region')}</h3><input class="fi" id="reg" value="${esc(app.region||'Karnataka, India')}"><p class="mut" style="font-size:12px;margin-top:-6px">${t('region_d')}</p></div><button class="btn" onclick="app.region=$('#reg').value;app.soilStep=2;render()">${t('next')} →</button>`;
+  if(n===2){const opt=(sel)=>`<option value="none"${sel==='none'?' selected':''}>${t('none')}</option>`+Object.keys(CROPS).map(id=>`<option value="${id}"${sel===id?' selected':''}>${CROPS[id].icon} ${cn(id)}</option>`).join('');
+    body=`<div class="card"><label class="l">${t('prev_crop')}</label><select class="fi" id="pc">${opt(app.prevCrop)}</select>
+    <label class="l">${t('prev_fert')}</label><select class="fi" id="pf">${[['none','none'],['chem','chem'],['organic','organic'],['both','both']].map(x=>`<option value="${x[0]}"${app.prevFert===x[0]?' selected':''}>${t(x[1])}</option>`).join('')}</select></div>
+    <div class="two"><button class="btn alt" onclick="app.soilStep=1;render()">${t('back')}</button><button class="btn" onclick="app.prevCrop=$('#pc').value;app.prevFert=$('#pf').value;app.soilStep=3;render()">${t('next')} →</button></div>`}
+  if(n===3)body=`<div class="photo" style="${app.photo?`background-image:url(${app.photo});border-style:solid`:''}">${app.photo?'':'<div><div style="font-size:44px">📷</div>'+t('st3')+'</div>'}</div>
+    <div class="two" style="margin-top:12px"><button class="btn alt" style="margin:0" onclick="takeSoil()">${IC.cam} ${t('take_photo')}</button><button class="btn alt" style="margin:0" onclick="$('#file').click()">⬆ ${t('upload')}</button></div>
+    <input type="file" id="file" accept="image/*" hidden onchange="pickFile(this)">
+    <button class="btn" ${app.photo?'':'disabled'} onclick="analyze()">🔬 ${t('analyze')}</button>
+    <button class="btn alt" onclick="app.soilStep=2;render()">${t('back')}</button>`;
+  return bar(t('soil_t'),'home')+stepsHtml(n)+`<div class="wrap">${body}</div>`;
+};
+function takeSoil(){openCam(url=>{app.photo=url;render()})}
+function pickFile(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{app.photo=r.result;render()};r.readAsDataURL(f)}
+function analyze(){app.analyzing=true;render();setTimeout(async()=>{app.soil=await soilFromPhoto(app.photo);app.analyzing=false;render()},2200)}
+function soilFromPhoto(src){return new Promise(res=>{
+  const fallback=()=>res(buildSoil(120,100,80));const im=new Image();im.onerror=fallback;
+  im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=48;const x=c.getContext('2d');x.drawImage(im,0,0,48,48);const d=x.getImageData(0,0,48,48).data;let r=0,g=0,b=0;const n=d.length/4;
+    for(let i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2]}res(buildSoil(r/n,g/n,b/n))}catch(e){fallback()}};im.src=src;
+})}
+function buildSoil(r,g,b){
+  const br=(r+g+b)/3;let type='loam';
+  if(br<80)type='black';else if(r>g*1.22&&r>b*1.45)type='red';else if(br>150)type='sandy';
+  let fert=100-br*.45;fert+=app.prevFert==='organic'?8:app.prevFert==='both'?4:app.prevFert==='none'?-6:0;
+  const pc=CROPS[app.prevCrop];if(pc&&pc.fam==='legume')fert+=6;if(app.prevCrop==='none')fert+=3;
+  fert=Math.round(Math.max(25,Math.min(92,fert)));const lv=v=>v>66?2:v>46?1:0;
+  const N=lv(fert+(pc&&pc.fam==='legume'?5:-3)),P=lv(fert+((r|0)%15)-7),K=lv(fert+((b|0)%15)-7);
+  const tr=[];if(fert<50)tr.push('tr_fym');if(N===0)tr.push('tr_green');if(type==='red')tr.push('tr_lime');if(type==='black')tr.push('tr_gypsum');if(type==='sandy')tr.push('tr_compost');if(!tr.length)tr.push('tr_ok');
+  return{type,fert,N,P,K,ph:PH[type],tr};
+}
+const LV=['low','medium','high'];
+function soilResult(){
+  const s=app.soil;const fl=s.fert>66?'high':s.fert>46?'medium':'low';
+  const bar1=(k,v)=>`<div class="b"><div class="t"><span>${k}</span><b>${t(LV[v])}</b></div><div class="tr"><i style="width:${[30,65,100][v]}%"></i></div></div>`;
+  return bar(t('soil_res'),'home')+`<div class="wrap"><div class="card"><div class="row"><div class="ring big" style="--p:${s.fert}"><b>${s.fert}</b></div><div class="sp"><div class="chip">🪨 ${soilName(s.type)}</div><p style="margin-top:8px"><span class="mut">${t('fertility')}:</span> <b>${t(fl)}</b></p><p><span class="mut">${t('ph')}:</span> <b>${s.ph[0]} – ${s.ph[1]}</b></p></div></div></div>
+  <div class="card bars"><h3>🧬 N · P · K</h3>${bar1('N',s.N)}${bar1('P',s.P)}${bar1('K',s.K)}</div>
+  <div class="card"><h3>🛠️ ${t('treat')}</h3><ul class="list">${s.tr.map(k=>`<li data-i="🌱">${t(k)}</li>`).join('')}</ul></div>
+  <div class="note">ℹ️ ${t('photo_note')}</div>
+  <button class="btn" onclick="go('reco')">${t('see_crop')} →</button><button class="btn alt" onclick="app.soil=null;app.soilStep=3;render()">${t('rescan')}</button></div>`;
+}
+/* recommendation */
+function recoText(top){
+  const temp=app.weather?app.weather.temp:26;const ty=app.soil?app.soil.type:'loam';
+  return fmt(t('reco_txt'),{crop:cn(top.id),temp,soil:soilName(ty),season:t('s_'+season()),score:top.score});
+}
+R.reco=()=>{
+  computeReco();const top=app.reco[0],c=CROPS[top.id];const txt=recoText(top);window._recoTxt=txt;
+  return bar(t('reco_t'),'home')+`<div class="wrap">${app.soil?'':`<div class="note">🌱 ${t('no_soil')} <button class="link" onclick="app.soilStep=1;go('soil')">${t('q_soil')}</button></div>`}
+  <div class="top-crop"><div class="row"><div class="em">${c.icon}</div><div class="sp"><div style="font-size:12px;color:var(--lime);font-weight:700">⭐ ${t('reco_t')}</div><h2 style="font-size:22px">${cn(top.id)}</h2></div><div class="ring" style="--p:${top.score}"><b style="color:#fff">${top.score}%</b></div></div>
+   <p>${esc(txt)}</p><div class="mini"><div>⏱️<b>${c.days} ${t('days')}</b>${t('duration')}</div><div>🌤️<b>${t('s_'+season())}</b></div><div>💰<b>${inr(netPerAcre(top.id))}</b>${t('net_profit')}</div></div>
+   <button class="spk" onclick="speak(window._recoTxt)">${IC.spk} ${t('listen')}</button></div>
+  <div class="card"><h3>🤔 ${t('why_not_q')}</h3><p class="mut" style="margin-bottom:10px">${t('tap_crop')}</p>${app.reco.slice(1).map(r=>`<button class="crow" onclick="whyNot('${r.id}')"><span class="em">${CROPS[r.id].icon}</span><div class="sp"><b>${cn(r.id)}</b><div class="tr"><i style="width:${r.score}%"></i></div></div><b>${r.score}%</b></button>`).join('')}
+  <button class="btn alt" onclick="go('ai')">💬 ${t('ask_more')}</button></div>
+  <button class="btn gold" onclick="app.chosen='${top.id}';go('decide')">✅ ${t('choose')}</button></div>`;
+};
+function whyText(r){const temp=app.weather?app.weather.temp:26;const key=r.reasons[0]||'r_fine';const reason=fmt(t(key),{temp});
+  return fmt(t('why_txt'),{crop:cn(r.id),score:r.score,reason})+' '+fmt(t('profit_txt'),{net:inr(netPerAcre(r.id)),days:CROPS[r.id].days})}
+function whyNot(id){
+  const r=app.reco.find(x=>x.id===id);const c=CROPS[id];const txt=whyText(r);window._whyTxt=txt;
+  showModal(`<div class="row"><span style="font-size:42px">${c.icon}</span><div class="sp"><h2>${cn(id)}</h2></div><div class="ring" style="--p:${r.score}"><b>${r.score}%</b></div></div>
+  <p style="margin:12px 0;line-height:1.55">${esc(txt)}</p><button class="spk" onclick="speak(window._whyTxt)">${IC.spk} ${t('listen')}</button>
+  <div class="card" style="margin-top:14px"><h3>👍 ${t('profits')}</h3><ul class="list">${c.pros.map(x=>`<li data-i="✅">${x}</li>`).join('')}</ul></div>
+  <div class="card"><h3>⚠️ ${t('faults')}</h3><ul class="list">${c.cons.map(x=>`<li data-i="❗">${x}</li>`).join('')}</ul></div>
+  <button class="btn" onclick="app.chosen='${id}';closeModal();go('decide')">${t('choose')}</button>`);
+}
+/* decision */
+R.decide=()=>{
+  computeReco();if(!app.chosen)app.chosen=app.reco[0].id;
+  return bar(t('decide_t'),'reco')+`<div class="wrap">${app.reco.slice(0,4).map(r=>`<button class="crow ${app.chosen===r.id?'sel':''}" onclick="app.chosen='${r.id}';render()"><span class="em">${CROPS[r.id].icon}</span><div class="sp"><b>${cn(r.id)}</b><div class="mut" style="font-size:12px">${CROPS[r.id].days} ${t('days')} · ${inr(netPerAcre(r.id))} / ${t('acres').split('(')[1]?'acre':'acre'}</div></div><b>${r.score}%</b></button>`).join('')}
+  <div class="card" style="margin-top:6px"><label class="l">${t('acres')}</label><div class="stepper" style="margin-top:10px"><button onclick="setAcres(${app.acres}-.5)">−</button><input type="number" min=".5" step=".5" value="${app.acres}" onchange="setAcres(this.value)"><button onclick="setAcres(${app.acres}+.5)">+</button></div></div>
+  <button class="btn gold" onclick="go('plan')">🚜 ${t('confirm')}</button></div>`;
+};
+function setAcres(v){v=parseFloat(v);if(!(v>=.5))v=.5;app.acres=Math.min(100,v);render()}
+/* plan */
+function priceChart(p){
+  const W=340,H=150,pl=34,pr=14,pt=22,pb=26;const vs=p.series.map(x=>x.v);const mn=Math.min(...vs)*.96,mx=Math.max(...vs)*1.04;
+  const X=i=>pl+i*(W-pl-pr)/5,Y=v=>pt+(1-(v-mn)/(mx-mn))*(H-pt-pb);
+  const pts=p.series.map((x,i)=>[X(i),Y(x.v)]);const line=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+  const area=line+` L${X(5)} ${H-pb} L${X(0)} ${H-pb}Z`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#52c57a" stop-opacity=".45"/><stop offset="1" stop-color="#52c57a" stop-opacity="0"/></linearGradient></defs>
+  ${[0,.5,1].map(f=>{const y=pt+f*(H-pt-pb);return `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#e1ebdc"/><text x="${pl-4}" y="${y+3}" font-size="9" text-anchor="end" fill="#5f7566">${Math.round(mx-(mx-mn)*f)}</text>`}).join('')}
+  <path d="${area}" fill="url(#pg)"/><path d="${line}" fill="none" stroke="#14804a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  ${pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="${i===5?6:3.5}" fill="${i===5?'#f6b93b':'#fff'}" stroke="#14804a" stroke-width="2"/><text x="${q[0]}" y="${H-8}" font-size="9" text-anchor="middle" fill="#5f7566">${p.series[i].d.toLocaleDateString(LC[app.lang],{month:'short'})}</text>`).join('')}
+  <text x="${pts[5][0]-4}" y="${pts[5][1]-11}" font-size="11" font-weight="700" text-anchor="end" fill="#a86b00">${inr(p.ph)}</text></svg>`;
+}
+R.plan=()=>{
+  if(!app.chosen){computeReco();app.chosen=app.reco[0].id}
+  const id=app.chosen,c=CROPS[id],p=planData(id,app.acres);
+  const txt=fmt(t('plan_txt'),{crop:cn(id),days:c.days,cost:inr(p.cost),inc:inr(p.inc),net:inr(p.net),date:fdate(p.hv)});window._planTxt=txt;
+  const labels=['b_seed','b_fert','b_pest','b_labour','b_irr'];const tot=p.cost;
+  return bar(t('plan_t'),'decide')+`<div class="wrap">
+  <div class="top-crop"><div class="row"><div class="em">${c.icon}</div><div class="sp"><h2 style="font-size:22px">${cn(id)}</h2><small style="color:#c9efb0">${app.acres} acre · ${c.days} ${t('days')}</small></div></div>
+   <div class="mini" style="margin-top:12px"><div>🌱<b>${fdate(p.sow)}</b>${t('sow')}</div><div>🧺<b>${fdate(p.hv)}</b>${t('harvest')}</div></div><button class="spk" onclick="speak(window._planTxt)">${IC.spk} ${t('listen')}</button></div>
+  <div class="card"><h3>⏱️ ${t('duration')}</h3><div class="tl"><div><i>🌱</i><b>${t('sow')}</b>${p.sow.toLocaleDateString(LC[app.lang],{day:'numeric',month:'short'})}</div><div><i>🌿</i><b>${t('grow')}</b>${p.grow.toLocaleDateString(LC[app.lang],{day:'numeric',month:'short'})}</div><div><i>🌼</i><b>${t('flower')}</b>${p.flower.toLocaleDateString(LC[app.lang],{day:'numeric',month:'short'})}</div><div><i>🧺</i><b>${t('harvest_s')}</b>${p.hv.toLocaleDateString(LC[app.lang],{day:'numeric',month:'short'})}</div></div></div>
+  <div class="card"><h3>🌰 ${t('seeds')}</h3><ul class="list">${c.seeds.map(x=>`<li data-i="•">${x}</li>`).join('')}</ul></div>
+  <div class="card"><h3>🧪 ${t('fert')}</h3><ul class="list">${c.fert.map(x=>`<li data-i="•">${x}</li>`).join('')}</ul></div>
+  <div class="card"><h3>🐛 ${t('pest')}</h3><ul class="list">${c.pest.map(x=>`<li data-i="•">${x}</li>`).join('')}</ul></div>
+  <div class="card bars bud"><h3>💼 ${t('budget')}</h3>${p.parts.map((v,i)=>`<div class="b"><div class="t"><span>${t(labels[i])}</span><b>${inr(v)}</b></div><div class="tr"><i style="width:${Math.round(v/tot*100)}%"></i></div></div>`).join('')}</div>
+  <div class="trio"><div><small>${t('total_cost')}</small><b>${inr(p.cost)}</b></div><div><small>${t('exp_income')}</small><b>${inr(p.inc)}</b></div><div class="pf"><small>${t('net_profit')}</small><b>${inr(p.net)}</b></div></div>
+  <div class="card"><h3>📈 ${t('price_pred')}</h3>${priceChart(p)}<p class="mut" style="font-size:11.5px">${t('price_note')}</p></div>
+  <div class="note">ℹ️ ${t('plan_note')}</div>
+  <div class="two"><button class="btn alt" onclick="go('alerts')">⛈️ ${t('q_alert')}</button><button class="btn alt" onclick="go('schemes')">🏛️ ${t('q_scheme')}</button></div></div>`;
+};
+/* alerts */
+R.alerts=()=>{
+  const keys=['rain','heat','drought','frost','pest'];const a=ALERTS[app.alertTab];
+  return bar(t('alert_t'),'more')+`<div class="tabs">${keys.map(k=>`<button class="${app.alertTab===k?'on':''}" onclick="app.alertTab='${k}';render()">${ALERTS[k].i} ${t('a_'+k)}</button>`).join('')}</div>
+  <div class="wrap"><div class="card"><h3>🛡️ ${t('prevent')}</h3><ul class="list">${a.pre.map(x=>`<li data-i="✔️">${x}</li>`).join('')}</ul></div>
+  <div class="card"><h3>🚨 ${t('protect')}</h3><ul class="list">${a.pro.map(x=>`<li data-i="✔️">${x}</li>`).join('')}</ul></div></div>`;
+};
+/* schemes */
+R.schemes=()=>{
+  window._dmg=t('dmg_txt');
+  return bar(t('scheme_t'),'more')+`<div class="wrap"><div class="note warn" style="line-height:1.55"><b>🚨 ${t('dmg_t')}</b><br>${esc(t('dmg_txt'))}<br><button class="spk" style="background:#fff" onclick="speak(window._dmg)">${IC.spk} ${t('listen')}</button></div>
+  ${SCHEMES.map(s=>`<div class="card"><h3>${s[0]} ${s[1]}</h3><p style="line-height:1.5">${s[2]}</p><p class="mut" style="margin-top:8px;font-size:12.5px;line-height:1.5">👉 ${s[3]}</p></div>`).join('')}
+  <div class="note">ℹ️ ${t('scheme_note')}</div></div>`;
+};
+/* more */
+R.more=()=>bar(t('more_t'),null)+`<div class="wrap">
+  <button class="menu" onclick="go('alerts')"><div class="e">⛈️</div><div class="sp"><b>${t('q_alert')}</b></div>›</button>
+  <button class="menu" onclick="go('schemes')"><div class="e">🏛️</div><div class="sp"><b>${t('q_scheme')}</b></div>›</button>
+  <button class="menu" onclick="go('decide')"><div class="e">📋</div><div class="sp"><b>${t('q_plan')}</b></div>›</button>
+  <div class="menu" style="cursor:default"><div class="e">🌐</div><div class="sp"><b>${t('lang')}</b></div>${langSel().replace('class="lang"','class="lang" style="background:#e6f5ea"')}</div>
+  <button class="menu" onclick="app.otpSent=false;app.phone='';app.chat=[];go('login')"><div class="e">🚪</div><div class="sp"><b>${t('logout')}</b></div>›</button>
+  <p class="hint" style="margin-top:14px">KrushiMithra · v0.1 front-end prototype</p></div>`;
+/* assistant */
+function findCrop(s){
+  for(const [id,c] of Object.entries(CROPS)){
+    const names=[id,...Object.values(c.n)].map(x=>x.toLowerCase().split(/[ (]/)[0]);if(id==='paddy')names.push('rice');
+    if(names.some(n=>n&&s.includes(n)))return id;
+  }return null;
+}
+function botReply(q){
+  const s=q.toLowerCase();computeReco();
+  const has=a=>a.some(k=>s.includes(k));
+  const cid=findCrop(s);
+  if(cid){const r=app.reco.find(x=>x.id===cid),c=CROPS[cid];const lead=whyText(r);
+    return{text:lead+'\n\n👍 '+t('profits')+': '+c.pros.join('; ')+'.\n⚠️ '+t('faults')+': '+c.cons.join('; ')+'.',speak:lead,action:{label:'✅ '+t('choose'),fn:`app.chosen='${cid}';go('decide')`}}}
+  if(has(['scheme','insurance','yojana','subsidy','pm-kisan','kisan','ಯೋಜನೆ','ವಿಮೆ','योजना','बीमा','పథకం','భీమా','బీమా','திட்டம்','காப்பீடு']))return{text:t('c_scheme'),action:{label:'🏛️ '+t('q_scheme'),fn:"go('schemes')"}};
+  if(has(['weather','rain','temperature','climate','ಹವಾಮಾನ','ಮಳೆ','मौसम','बारिश','వాతావరణ','వర్షం','வானிலை','மழை'])){const w=app.weather||demoWeather();return{text:fmt(t('c_weather'),{region:app.region||'Karnataka',temp:w.temp,hum:w.hum}),action:{label:'⛈️ '+t('q_alert'),fn:"go('alerts')"}}}
+  if(has(['soil','fertil','ಮಣ್ಣು','मिट्टी','నేల','மண்']))return{text:t('c_soil'),action:{label:'🌱 '+t('q_soil'),fn:"app.soilStep=1;app.soil=null;go('soil')"}};
+  if(has(['crop','grow','which','best','plant','ಬೆಳೆ','फसल','పంట','பயிர்','सबसे','ಉತ್ತಮ','ఉత్తమ','சிறந்த'])){const top=app.reco[0];return{text:fmt(t('c_crop'),{crop:cn(top.id),score:top.score}),action:{label:'🌾 '+t('q_crop'),fn:"go('reco')"}}}
+  return{text:t('c_fb')};
+}
+R.ai=()=>{
+  if(!app.chat.length)app.chat.push({r:'bot',text:t('c_greet')});
+  const msgs=app.chat.map((m,i)=>`<div class="bub ${m.r}">${esc(m.text)}${m.r==='bot'?`<div><button class="spk" onclick="speakMsg(${i})">${IC.spk} ${t('listen')}</button></div>`:''}${m.action?`<div class="act"><button class="btn sm" onclick="${m.action.fn}">${esc(m.action.label)}</button></div>`:''}</div>`).join('');
+  return bar(t('ai_t'),null)+`<div class="chat"><div class="msgs">${msgs}</div><div class="sug">${['sug1','sug2','sug3'].map(k=>`<button onclick="sendChat(t('${k}'),false)">${t(k)}</button>`).join('')}</div>
+  <div class="chatbar"><input id="ci" placeholder="${t('ai_ph')}" onkeydown="if(event.key==='Enter')sendChat()"><button onclick="micChat()">${IC.mic}</button><button onclick="sendChat()">${IC.send}</button></div></div>`;
+};
+AFTER.ai=()=>{
+  const v=$('#view');v.scrollTop=v.scrollHeight;
+  if(app.pendingQ){const q=app.pendingQ;app.pendingQ=null;sendChat(q,app.pendingVoice)}
+};
+function speakMsg(i){const m=app.chat[i];speak(m.speak||m.text)}
+function sendChat(text,voice){
+  const el=$('#ci');const q=(text||(el&&el.value)||'').trim();if(!q)return;
+  app.chat.push({r:'me',text:q});render();
+  setTimeout(()=>{const rep=botReply(q);app.chat.push(Object.assign({r:'bot'},rep));if(app.screen==='ai')render();if(voice)speak(rep.speak||rep.text)},450);
+}
+function micChat(){listen(txt=>sendChat(txt,true))}
+
+/* ===================== boot ===================== */
+(function boot(){
+  $('#spt').innerHTML='KrushiMithra'.split('').map((ch,i)=>`<span style="animation-delay:${1.2+i*.06}s">${ch}</span>`).join('');
+  $('#spg').textContent=t('tagline');
+  setTimeout(()=>go('login'),3300);
+})();
+</script>
+</body>
+</html>
